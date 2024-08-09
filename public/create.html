@@ -1,0 +1,51 @@
+<!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Own Quiz</title>
+    <link rel="stylesheet" href="create.css">
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="container">
+        <h2>Create Your Own Quiz</h1>
+        <form action="mailto:your-email@example.com" method="post" enctype="text/plain" id="quizForm">
+            <div>
+                <label for="quizName">Quiz Name:</label>
+                <input type="text" id="quizName" name="quizName" required>
+            </div>
+            <div>
+                <label for="timer">Set Timer (minutes):</label>
+                <select id="timer" name="timer">
+                    <!-- Change this to have js function add in numbers from 1 to 20 -->
+                    <option value="5">1</option>
+                    <option value="5">2</option>
+                    <option value="5">3</option>
+                    <option value="5">4</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
+            <div id="questionsContainer">
+                <div class="question">
+                    <label>Question 1:</label>
+                    <input type="text" name="question" required>
+                    <label>Answer:</label>
+                    <input type="text" name="answer" required>
+                    <label>Hint:</label>
+                    <input type="text" name="hint">
+                    <label>Image URL:</label>
+                    <input type="text" name="imageUrl">
+                </div>
+            </div>
+            <button type="button" id="addQuestion">Add Question</button>
+            <button type="submit" onclick="submitCreateFormButton()">Submit</button>
+        </form>
+    </div>
+    <script src="create.js"></script>
+</body>
+</html>
