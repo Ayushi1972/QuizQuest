@@ -1,6 +1,6 @@
 /* Navbar Container */
 .navbar {
-  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Vibrant gradient background */
+  background: #6A67CE; /* Vibrant gradient background */
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -27,13 +27,14 @@
 
 .navbar li {
   position: relative;
+  align-content: center;
 }
 
 /* Link Styling */
 .navbar a {
   color: #fff;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 20px;
   padding: 5px 10px;
   border-radius: 5px;
   transition: background 0.3s, transform 0.3s;
@@ -53,18 +54,18 @@
 /* Random Quiz Button */
 .navbar button {
   background-color: #fff;
-  color: #ff7e5f;
+  color: #6A67CE;
   border: none;
   padding: 10px 20px;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   transition: background 0.3s, transform 0.3s;
 }
 
 /* Button Hover Effect */
 .navbar button:hover {
-  background-color: #feb47b;
+  background-color: #FBF8FF;
   transform: scale(1.05);
 }
 
@@ -77,6 +78,7 @@
 
   .navbar li {
     margin-bottom: 10px;
+    align-content: center;
   }
 
   .navbar button {
