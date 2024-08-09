@@ -1,5 +1,7 @@
 // <!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
 import React, { useState } from 'react';
+import './Create.css';
+
 
 function CreateQuiz() {
   const [title, setTitle] = useState('');
@@ -12,7 +14,7 @@ function CreateQuiz() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div id="create-form">
         <label for="quiz-title">Quiz Title</label>
         <input
           type="text"
