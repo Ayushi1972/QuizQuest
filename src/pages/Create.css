@@ -9,25 +9,25 @@ form {
     width: 700px;
     /* max-width: 500px; */
     margin: 20px auto;
-  }
-  
-  /* Form Section */
-  #create-form {
+}
+
+/* Form Section */
+#create-form {
     margin-bottom: 15px;
     width: 100%;
-  }
-  
-  /* Form Labels */
-  form label {
+}
+
+/* Form Labels */
+form label {
     color: #6A67CE; /* Matching the navbar's background color */
     font-size: 18px;
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
-  }
-  
-  /* Form Inputs */
-  form input[type="text"] {
+}
+
+/* Form Inputs */
+form input[type="text"] {
     width: 100%;
     padding: 10px;
     border: 2px solid #6A67CE; /* Border color matching the navbar */
@@ -37,16 +37,17 @@ form {
     background-color: #FBF8FF; /* Light background to match the button hover effect */
     margin-bottom: 15px;
     transition: border-color 0.3s;
-  }
-  
-  /* Input Focus State */
-  form input[type="text"]:focus {
+    box-sizing: border-box; /* Include padding and border within the width */
+}
+
+/* Input Focus State */
+form input[type="text"]:focus {
     border-color: #6A67CE; /* Highlight border on focus */
     outline: none;
-  }
-  
-  /* Submit Button */
-  form button[type="submit"] {
+}
+
+/* Submit Button */
+form button[type="submit"] {
     background-color: #6A67CE;
     color: #fff;
     border: none;
@@ -56,11 +57,10 @@ form {
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s, transform 0.3s;
-  }
-  
-  /* Button Hover Effect */
-  form button[type="submit"]:hover {
+}
+
+/* Button Hover Effect */
+form button[type="submit"]:hover {
     background-color: #5A56B9; /* Slightly darker shade on hover */
     transform: scale(1.05);
-  }
-  
+}
