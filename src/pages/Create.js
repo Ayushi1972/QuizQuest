@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import './Create.css';
 
-
 function CreateQuiz() {
   const [title, setTitle] = useState('');
   const [questions, setQuestions] = useState([]);

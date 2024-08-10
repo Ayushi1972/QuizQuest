@@ -1,0 +1,61 @@
+/* Card Container */
+#about-card {
+    background-color: #FFFFFF; /* White background for a clean card look */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+    color: #333; /* Dark gray for text */
+    max-width: 600px; /* Constrain the width */
+    margin: 40px auto; /* Center the card */
+}
+
+/* Heading Styles */
+#about-heading {
+    color: #6A67CE; /* Soft purple to match your theme */
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+#connect-heading {
+    color: #6A67CE; /* Same soft purple */
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* Paragraph Styles */
+.about-paragraph {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+/* List Styles */
+#social-links {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center the list items */
+}
+
+#social-links li {
+    margin: 0 10px; /* Space between list items */
+}
+
+/* Link Styles */
+#social-links a {
+    color: #6A67CE; /* Purple link color */
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+#social-links a:hover {
+    color: #5A56B9; /* Slightly darker purple on hover */
+}
