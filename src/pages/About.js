@@ -20,12 +20,12 @@ function About() {
       <div id="connect-section">
         <h2 id="connect-heading">Connect with Me</h2>
         <ul id="social-links">
-          <li>
+          <li class="links">
             <a href="https://www.linkedin.com/in/ayushiaminn" target="_blank" rel="noopener noreferrer" aria-label="Connect with Ayushi Amin on LinkedIn">
               LinkedIn
             </a>
           </li>
-          <li>
+          <li class="links">
             <a href="https://www.instagram.com/_ayushiaminn_/" target="_blank" rel="noopener noreferrer" aria-label="Follow Ayushi Amin on Instagram">
               Instagram
             </a>

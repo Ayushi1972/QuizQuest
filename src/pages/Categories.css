@@ -1,14 +1,13 @@
 /* Form Container */
 form {
     background-color: #F5F5FF; /* Light purple background */
-    padding: 40px; /* More padding for white space inside the form */
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card effect */
-    width: 100vw; /* Full width of the viewport */
-    max-width: 1200px; /* Optional: Max width for larger screens */
-    margin: 20px auto; /* Center the form with white space around it */
+    max-width: 800px;
+    margin: 40px auto;
     font-family: 'Poppins', sans-serif; /* Consistent font */
-    box-sizing: border-box; /* Include padding and border in the element's total width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 /* Form Section */
@@ -23,7 +22,7 @@ form label {
     color: #6A67CE; /* Matching the navbar's background color */
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 0;
+    margin-bottom: 8px;
 }
 
 /* Form Inputs */
@@ -33,12 +32,12 @@ form select {
     padding: 10px;
     border: 2px solid #6A67CE; /* Border color matching the theme */
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
     background-color: #FBF8FF; /* Light background to match the button hover effect */
     margin-bottom: 15px;
-    transition: border-color 0.3s;
     box-sizing: border-box; /* Ensure padding and border are included in the total width */
+    transition: border-color 0.3s;
 }
 
 /* Input Focus State */
@@ -61,21 +60,6 @@ form select:focus {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
-    display: flex;
-    flex-direction: row; /* Arrange child elements in a row */
-    gap: 20px; /* Space between items in a row */
-    align-items: center; /* Center items vertically */
-}
-
-/* Question Label */
-.question label {
-    flex: 1; /* Allow labels to take up available space */
-    font-size: 18px; /* Adjust font size if needed */
-}
-
-/* Input Fields */
-.question input[type="text"] {
-    flex: 2; /* Allow input fields to take up more space */
 }
 
 /* Add Question Button */
@@ -88,6 +72,7 @@ form select:focus {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    margin-bottom: 10px;
     align-self: center; /* Center the button */
 }
 
@@ -103,7 +88,7 @@ button[type="submit"] {
     border: none;
     padding: 12px 20px;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     width: 100%;

@@ -47,6 +47,11 @@
     margin: 0 10px; /* Space between list items */
 }
 
+#social-links li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 /* Link Styles */
 #social-links a {
     color: #6A67CE; /* Purple link color */
