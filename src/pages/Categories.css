@@ -1,100 +1,50 @@
-/* Form Container */
-form {
-    background-color: #F5F5FF; /* Light purple background */
-    padding: 20px;
+/* Container for Categories */
+.categories {
+    display: flex;
+    flex-wrap: wrap; /* Allows the cards to wrap onto the next line */
+    gap: 20px; /* Space between the cards */
+    padding: 30px;
+    background-color: #F5F5FF; /* Light background to complement the navbar */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
+    max-width: 1200px; /* Limit the width of the container */
+    margin: 40px auto; /* Center the container */
+}
+
+/* Individual Category Card */
+.category-card {
+    background-color: #FFFFFF; /* White background for card */
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card effect */
-    max-width: 800px;
-    margin: 40px auto;
-    font-family: 'Poppins', sans-serif; /* Consistent font */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    width: calc(33.333% - 20px); /* Responsive width for 3 cards per row */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
 }
 
-/* Form Section */
-#create-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between form elements */
-}
-
-/* Form Labels */
-form label {
-    color: #6A67CE; /* Matching the navbar's background color */
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-/* Form Inputs */
-form input[type="text"],
-form select {
+/* Category Card Image */
+.category-card img {
     width: 100%;
-    padding: 10px;
-    border: 2px solid #6A67CE; /* Border color matching the theme */
-    border-radius: 5px;
-    font-size: 16px;
-    color: #333;
-    background-color: #FBF8FF; /* Light background to match the button hover effect */
-    margin-bottom: 15px;
-    box-sizing: border-box; /* Ensure padding and border are included in the total width */
-    transition: border-color 0.3s;
+    height: auto; /* Maintain aspect ratio */
 }
 
-/* Input Focus State */
-form input[type="text"]:focus,
-form select:focus {
-    border-color: #5A56B9; /* Highlight border on focus */
-    outline: none;
-}
-
-/* Questions Container */
-#questionsContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between question sections */
-}
-
-/* Question Sections */
-.question {
-    background-color: #FFFFFF; /* White background for each question */
+/* Category Card Heading */
+.category-card h2 {
+    color: #6A67CE; /* Soft purple to match your theme */
+    font-size: 24px;
+    font-weight: 600;
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
+    margin: 0;
+    text-align: center;
 }
 
-/* Add Question Button */
-#addQuestion {
-    background-color: #6A67CE;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    margin-bottom: 10px;
-    align-self: center; /* Center the button */
+/* Link Styles */
+.category-card a {
+    display: block;
+    text-decoration: none;
 }
 
-#addQuestion:hover {
-    background-color: #5A56B9; /* Slightly darker shade on hover */
-    transform: scale(1.05);
-}
-
-/* Submit Button */
-button[type="submit"] {
-    background-color: #6A67CE;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: #5A56B9; /* Slightly darker shade on hover */
-    transform: scale(1.05);
+/* Hover Effects for Cards */
+.category-card:hover {
+    transform: translateY(-5px); /* Slightly lift the card on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }

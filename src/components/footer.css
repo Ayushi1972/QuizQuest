@@ -1,0 +1,18 @@
+/* Footer */
+footer {
+    background-color: #6A67CE; /* Background color matching the navbar */
+    color: #FFFFFF; /* White text color */
+    padding: 20px; /* Space inside the footer */
+    text-align: center; /* Center text alignment */
+    border-top: 2px solid #5A56B9; /* Slightly darker border for visual separation */
+    position: relative; /* Ensure proper placement */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding and border in the total width */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+    font-size: 16px; /* Adjust font size if needed */
+}
+
+/* Footer Paragraph */
+footer p {
+    margin: 0; /* Remove default margin */
+}
