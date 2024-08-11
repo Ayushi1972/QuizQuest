@@ -3,6 +3,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Categories from './pages/Categories';
@@ -19,6 +20,7 @@ function App() {
         <Route path="/pages/Create" element={<Create />} />
         {/* Add more routes as needed */}
       </Routes>
+      <Footer />
     </Router>
   );
 }
