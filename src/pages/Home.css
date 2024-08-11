@@ -1,0 +1,66 @@
+/* Container for the quizzes */
+.quiz-container {
+    background-color: #F5F5FF; /* Light purple background to match the theme */
+    padding: 40px 20px; /* Generous padding for spacing */
+    border-radius: 12px; /* Rounded corners for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card effect */
+    max-width: 1200px; /* Max width for larger screens */
+    margin: 20px auto; /* Center the container with space around */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+}
+
+/* Main title */
+.quiz-container h1 {
+    font-size: 24px; /* Adjust font size for the main title */
+    color: #6A67CE; /* Color matching the theme */
+    text-align: center; /* Center align the title */
+    margin-bottom: 20px; /* Space below the title */
+}
+
+/* Subtitle */
+.quiz-container h2 {
+    font-size: 20px; /* Adjust font size for the subtitle */
+    color: #5A56B9; /* Slightly darker shade to distinguish from the main title */
+    margin-bottom: 20px; /* Space below the subtitle */
+    text-align: center; /* Center align the subtitle */
+}
+
+/* Grid container for the quizzes */
+#quizzes {
+    display: grid; /* Use CSS Grid */
+    grid-template-columns: auto auto auto; /* Responsive columns */
+    gap: 20px; /* Space between grid items */
+}
+
+/* Quiz Card styles */
+.quiz-card {
+    background-color: #FFFFFF; /* White background for each card */
+    padding: 20px; /* Space inside the card */
+    border-radius: 10px; /* Rounded corners for the card */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
+    display: flex; /* Flexbox for layout inside the card */
+    flex-direction: column; /* Arrange elements vertically */
+    align-items: center; /* Center align items */
+    text-align: center; /* Center align text */
+}
+
+/* Quiz Card Title */
+.quiz-card h3 {
+    font-size: 18px; /* Font size for the card title */
+    color: #6A67CE; /* Color matching the theme */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+/* Quiz Card Image */
+.quiz-card img {
+    max-width: 100%; /* Ensure the image fits within the card */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for the image */
+    margin-bottom: 15px; /* Space below the image */
+}
+
+/* Quiz Card Description */
+.quiz-card p {
+    font-size: 16px; /* Font size for the description */
+    color: #333; /* Dark text color for readability */
+}

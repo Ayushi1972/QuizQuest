@@ -1,6 +1,7 @@
 import React from 'react';
 import QuizCard from '../components/QuizCard';
 import blankSpace1 from '../assets/images/love-story-taylor.jpg';
+import './Home.css'
 
 function Home() {
     const quizzes = [
@@ -26,14 +27,16 @@ function Home() {
         <div className="quiz-container">
             <h1>Search a quiz or choose a featured one to begin!</h1>
             <h2>Featured</h2>
-            {quizzes.map((quiz, index) => (
-                <QuizCard
-                    key={index}
-                    title={quiz.title}
-                    image={quiz.image}
-                    description={quiz.description}
-                />
-            ))}
+            <div id="quizzes">
+                {quizzes.map((quiz, index) => (
+                    <QuizCard
+                        key={index}
+                        title={quiz.title}
+                        image={quiz.image}
+                        description={quiz.description}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
