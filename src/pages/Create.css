@@ -26,8 +26,9 @@ form label {
     margin-bottom: 0;
 }
 
-/* Form Inputs */
+/* Form Inputs and Textarea */
 form input[type="text"],
+form textarea,
 form select {
     width: 100%;
     padding: 10px;
@@ -43,6 +44,7 @@ form select {
 
 /* Input Focus State */
 form input[type="text"]:focus,
+form textarea:focus,
 form select:focus {
     border-color: #5A56B9; /* Highlight border on focus */
     outline: none;
@@ -62,20 +64,18 @@ form select:focus {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
     display: flex;
-    flex-direction: row; /* Arrange child elements in a row */
-    gap: 20px; /* Space between items in a row */
-    align-items: center; /* Center items vertically */
+    flex-direction: row; /* Arrange child elements in a column */
+    gap: 10px; /* Space between items in a column */
 }
 
 /* Question Label */
 .question label {
-    flex: 1; /* Allow labels to take up available space */
-    font-size: 18px; /* Adjust font size if needed */
+    font-size: 16px; /* Adjust font size if needed */
 }
 
 /* Input Fields */
 .question input[type="text"] {
-    flex: 2; /* Allow input fields to take up more space */
+    width: 100%; /* Full width for input fields */
 }
 
 /* Add Question Button */
@@ -93,6 +93,24 @@ form select:focus {
 }
 
 #addQuestion:hover {
+    background-color: #5A56B9; /* Slightly darker shade on hover */
+    transform: scale(1.05);
+}
+
+/* Delete Button */
+.question button[type="button"] {
+    background-color: #6A67CE; /* Same background color as Add Question button */
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    align-self: center; /* Center the button within the question section */
+}
+
+.question button[type="button"]:hover {
     background-color: #5A56B9; /* Slightly darker shade on hover */
     transform: scale(1.05);
 }
