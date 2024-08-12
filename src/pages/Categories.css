@@ -8,7 +8,7 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
     max-width: 1200px; /* Limit the width of the container */
-    margin: 40px auto; /* Center the container */
+    margin: 55px auto; /* Center the container */
 }
 
 /* Individual Category Card */
@@ -47,4 +47,47 @@
 .category-card:hover {
     transform: translateY(-5px); /* Slightly lift the card on hover */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+/* Dropdown Menu Styles */
+#sort-dropdown {
+    position: fixed;
+    right: 110px;
+    top: 125px;
+}
+
+#sort {
+    padding: 10px;
+    border: 1px solid #6A67CE; /* Border color to match the theme */
+    border-radius: 8px;
+    background-color: #FFFFFF; /* White background for dropdown */
+    font-size: 14px;
+    color: #333; /* Text color */
+    appearance: none; /* Remove default styling */
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    margin-bottom: 20px; /* Space between dropdown and category cards */
+}
+
+/* Focus state for Dropdown */
+#sort:focus {
+    outline: none;
+    border-color: #4C4A8D; /* Darker border color on focus */
+}
+
+/* Container for Dropdown */
+.categories label {
+    font-size: 16px;
+    color: #6A67CE; /* Text color to match theme */
+    margin-right: 10px; /* Space between label and dropdown */
+}
+
+/* Add a custom dropdown arrow */
+#sort::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+    font-size: 12px;
+    color: #6A67CE;
 }
