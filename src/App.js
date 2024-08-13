@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Categories from './pages/Categories';
 import Create from './pages/Create';
+import QuizPage from './pages/QuizPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/pages/About" element={<About />} />
         <Route path="/pages/Categories" element={<Categories />} />
         <Route path="/pages/Create" element={<Create />} />
+        <Route path="/quiz/:title" element={<QuizPage />} />
         {/* Add more routes as needed */}
       </Routes>
       <Footer />

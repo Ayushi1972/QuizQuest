@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/ayushiamin/Documents/quiz-quest/QuizQuest/QuizQuest.sqlproj": {}
+  },
+  "projects": {
+    "/Users/ayushiamin/Documents/quiz-quest/QuizQuest/QuizQuest.sqlproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/ayushiamin/Documents/quiz-quest/QuizQuest/QuizQuest.sqlproj",
+        "projectName": "QuizQuest",
+        "projectPath": "/Users/ayushiamin/Documents/quiz-quest/QuizQuest/QuizQuest.sqlproj",
+        "packagesPath": "/Users/ayushiamin/.nuget/packages/",
+        "outputPath": "/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "/Users/ayushiamin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net46"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net46": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU5128"
+          ]
+        }
+      },
+      "frameworks": {
+        "net46": {
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.0, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}

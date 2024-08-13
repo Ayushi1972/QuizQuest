@@ -1,9 +1,13 @@
+// Home.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import QuizCard from '../components/QuizCard';
 import blankSpace1 from '../assets/images/love-story-taylor.jpg';
-import './Home.css'
+import './Home.css';
 
 function Home() {
+    const navigate = useNavigate();
+
     const quizzes = [
         {
             title: 'Blank Space - Taylor Swift',
@@ -20,8 +24,11 @@ function Home() {
             image: blankSpace1,
             description: 'Can you guess lyrics of the famous Taylor Swift Song?',
         },
-        // Add more quizzes as needed
     ];
+
+    const handleCardClick = (quizTitle) => {
+        navigate(`/quiz/${quizTitle}`);
+    };
 
     return (
         <div className="quiz-container">
@@ -34,6 +41,7 @@ function Home() {
                         title={quiz.title}
                         image={quiz.image}
                         description={quiz.description}
+                        onClick={() => handleCardClick(quiz.title)}
                     />
                 ))}
             </div>

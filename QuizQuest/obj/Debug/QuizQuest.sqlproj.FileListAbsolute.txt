@@ -1,0 +1,7 @@
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/bin/Debug/QuizQuest.dacpac
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/Model.xml
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/refactor.xml
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/postdeploy.sql
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/predeploy.sql
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/QuizQuest.dll
+/Users/ayushiamin/Documents/quiz-quest/QuizQuest/obj/Debug/QuizQuest.pdb
