@@ -9,7 +9,7 @@ function Navbar() {
 
   // Function to handle redirection
   const chooseRandomQuiz = () => {
-    navigate('/pages/Home'); // Redirect to About page
+    navigate('/pages/Quiz'); // Redirect to About page
   };
 
   return (

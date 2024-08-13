@@ -135,15 +135,12 @@ function CreateQuiz() {
             id="timer"
             name="timer"
             value={timer}
-            onChange={(e) => setTimer(e.target.value)} // Update timer state on change
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
+            onChange={(e) => setTimer(e.target.value)}>
+            {
+              Array.from({ length: 21 }, (_, i) => (
+                <option value={i} key={i}>{i}</option>
+              ))
+            }
           </select>
         </div>
 

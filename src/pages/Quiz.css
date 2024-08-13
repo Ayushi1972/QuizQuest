@@ -1,0 +1,63 @@
+/* Multiple Choice Question Container */
+.multiple-choice-question {
+    background-color: #FFFFFF; /* White background for each question */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+}
+
+/* Multiple Choice Question Label */
+.multiple-choice-question p {
+    color: #6A67CE; /* Matching the navbar's background color */
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Multiple Choice Options */
+.multiple-choice-question label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Input Question Container */
+.input-question {
+    background-color: #FFFFFF; /* White background for each question */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+}
+
+/* Input Question Label */
+.input-question p {
+    color: #6A67CE; /* Matching the navbar's background color */
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Input Field */
+.input-question input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #6A67CE; /* Border color matching the theme */
+    border-radius: 5px;
+    font-size: 18px;
+    color: #333;
+    background-color: #FBF8FF; /* Light background to match the button hover effect */
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Ensure padding and border are included in the total width */
+}
+
+/* Input Focus State */
+.input-question input[type="text"]:focus {
+    border-color: #5A56B9; /* Highlight border on focus */
+    outline: none;
+}
