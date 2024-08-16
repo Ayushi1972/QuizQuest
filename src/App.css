@@ -1,4 +1,13 @@
 /* Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 */
+/* Root variables for theme colors and typography */
+:root {
+  --primary-color: #6A67CE; /* Soft purple */
+  --secondary-color: #FFFFFF; /* White */
+  --background-color: #F5F5FF; /* Light background */
+  --highlight-color: #5A56B9; /* Darker purple for hover */
+  --font-family: 'Poppins', sans-serif;
+  --font-size: 16px;
+}
 
 .App {
   text-align: center;

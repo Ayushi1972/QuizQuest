@@ -17,14 +17,16 @@
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
     overflow: hidden; /* Ensures content stays within rounded corners */
-    width: calc(33.333% - 20px); /* Responsive width for 3 cards per row */
+    flex: 1 1 calc(33.333% - 20px); /* Responsive width for 3 cards per row */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+    max-width: calc(33.333% - 20px); /* Ensure cards don't exceed container width */
 }
 
 /* Category Card Image */
 .category-card img {
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
+    height: auto;
+    padding-bottom: 30px;
 }
 
 /* Category Card Heading */
@@ -39,8 +41,11 @@
 
 /* Link Styles */
 .category-card a {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
+    color: inherit; /* Inherit color for better accessibility */
 }
 
 /* Hover Effects for Cards */
@@ -51,9 +56,10 @@
 
 /* Dropdown Menu Styles */
 #sort-dropdown {
-    position: fixed;
-    right: 110px;
-    top: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 #sort {
@@ -66,7 +72,8 @@
     appearance: none; /* Remove default styling */
     cursor: pointer;
     transition: border-color 0.3s ease;
-    margin-bottom: 20px; /* Space between dropdown and category cards */
+    margin-left: 10px; /* Space between label and dropdown */
+    position: relative;
 }
 
 /* Focus state for Dropdown */
@@ -79,7 +86,6 @@
 .categories label {
     font-size: 16px;
     color: #6A67CE; /* Text color to match theme */
-    margin-right: 10px; /* Space between label and dropdown */
 }
 
 /* Add a custom dropdown arrow */
@@ -90,4 +96,6 @@
     pointer-events: none;
     font-size: 12px;
     color: #6A67CE;
+    top: 50%;
+    transform: translateY(-50%);
 }

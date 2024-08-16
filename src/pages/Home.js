@@ -1,30 +1,20 @@
-// Home.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizCard from '../components/QuizCard';
-import blankSpace1 from '../assets/images/love-story-taylor.jpg';
 import './Home.css';
 
 function Home() {
     const navigate = useNavigate();
+    const [quizzes, setQuizzes] = useState([]);
 
-    const quizzes = [
-        {
-            title: 'Blank Space - Taylor Swift',
-            image: blankSpace1,
-            description: 'Can you guess lyrics of the famous Taylor Swift Song?',
-        },
-        {
-            title: 'One Dance - Drake',
-            image: blankSpace1,
-            description: 'Can you guess lyrics of the famous Drake Song?',
-        },
-        {
-            title: 'Love Story - Taylor Swift',
-            image: blankSpace1,
-            description: 'Can you guess lyrics of the famous Taylor Swift Song?',
-        },
-    ];
+    useEffect(() => {
+        fetch('http://localhost:3001/api/quizzes')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setQuizzes(data);})
+            .catch(error => console.error('Error fetching quizzes:', error));
+    }, []);
 
     const handleCardClick = (quizTitle) => {
         navigate(`/quiz/${quizTitle}`);
@@ -38,10 +28,11 @@ function Home() {
                 {quizzes.map((quiz, index) => (
                     <QuizCard
                         key={index}
-                        title={quiz.title}
-                        image={quiz.image}
-                        description={quiz.description}
-                        onClick={() => handleCardClick(quiz.title)}
+                        title={quiz.Title}
+                        category={quiz.Category}
+                        image={quiz.ImageURL}
+                        description={quiz.Description}
+                        onClick={() => handleCardClick(quiz.Title)}
                     />
                 ))}
             </div>

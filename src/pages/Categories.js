@@ -1,11 +1,20 @@
-// <!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Categories.css';
 
 function Categories() {
-  const [categories, setCategories] = useState(['Music', 'History', 'Science', 'Pop Culture', 'Sports', 'Geography']);
+  const [categories, setCategories] = useState([]);
   const [sortOrder, setSortOrder] = useState('default');
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/categories')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setCategories(data);
+      })
+      .catch(error => console.error('Error fetching categories:', error));
+  }, []);
 
   const handleSortChange = (event) => {
     const order = event.target.value;
@@ -13,11 +22,11 @@ function Categories() {
 
     let sortedCategories;
     if (order === 'ascending') {
-      sortedCategories = [...categories].sort();
+      sortedCategories = [...categories].sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
     } else if (order === 'descending') {
-      sortedCategories = [...categories].sort().reverse();
+      sortedCategories = [...categories].sort((a, b) => b.CategoryName.localeCompare(a.CategoryName));
     } else {
-      sortedCategories = ['Music', 'History', 'Science', 'Pop Culture', 'Sports', 'Geography'];
+      sortedCategories = categories; // Use the default order from the API
     }
     setCategories(sortedCategories);
   };
@@ -28,19 +37,18 @@ function Categories() {
       <div id="sort-dropdown">
         <label htmlFor="sort">Sort by: </label>
         <select id="sort" value={sortOrder} onChange={handleSortChange}>
-          <option value="default">Default</option>
           <option value="ascending">Alphabetically A-Z</option>
           <option value="descending">Alphabetically Z-A</option>
         </select>
       </div>
 
       {categories.map(category => (
-        <div key={category} className="category-card">
-          <Link to={`/quizzes/${category}`} aria-label={`Quizzes about ${category}`}>
-            <h2>{category}</h2>
+        <div key={category.CategoryName} className="category-card">
+          <Link to={`/quizzes/${category.CategoryName}`} aria-label={`Quizzes about ${category.CategoryName}`}>
+            <h2>{category.CategoryName}</h2>
             <img
-              src={`../assets/images/${category.toLowerCase()}.jpg`}
-              alt={`Illustration representing ${category}`}
+              src={category.ImageURL}
+              alt={`Illustration representing ${category.CategoryName}`}
             />
           </Link>
         </div>

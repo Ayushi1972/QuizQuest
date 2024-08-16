@@ -1,0 +1,35 @@
+/* TextInputQuestion.css */
+.text-input-question {
+    background-color: #FFFFFF; /* White background for card */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
+    padding: 20px; /* Padding inside the card */
+    margin: 20px 0; /* Space between cards */
+    width: 90%; /* Full width for responsiveness */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    text-align: center; /* Center text within the card */
+}
+
+/* Heading Styles for Question */
+.text-input-question h2 {
+    color: #6A67CE; /* Soft purple for question text */
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Text Input Field Styles */
+.text-input-question input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6A67CE; /* Border color to match theme */
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+/* Focus State for Input */
+.text-input-question input[type="text"]:focus {
+    outline: none;
+    border-color: #4C4A8D; /* Darker border color on focus */
+}

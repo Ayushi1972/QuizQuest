@@ -34,7 +34,7 @@ function CreateQuiz() {
       newErrors.category = 'Please select a category';
     }
 
-    if (questions.length == 0){
+    if (questions.length === 0){
       newErrors.questions = "Must have at least 1 question"
     }
 

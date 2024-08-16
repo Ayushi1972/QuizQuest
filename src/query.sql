@@ -1,4 +1,0 @@
-CREATE DATABASE QuizDB;
-GO
-USE QuizDB;
-GO

@@ -1,6 +1,6 @@
 // <!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Navbar.css';
 
