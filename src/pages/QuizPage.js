@@ -19,6 +19,7 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const [score, setScore] = useState(0);
+  const [submitted, setSubmitted] = useState(false); // Track if the quiz has been submitted
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -66,6 +67,7 @@ function QuizPage() {
 
     setFeedback(newFeedback);
     setScore(newScore);
+    setSubmitted(true); // Set submitted to true when the quiz is submitted
   };
 
   if (!quizData) {
@@ -74,13 +76,15 @@ function QuizPage() {
 
   return (
     <div id='all-quiz-page'>
-      <div className="score" style={{ position: 'absolute', top: '20px', right: '20px' }}>
-        Score: {score} / {quizData.questions.length}
-      </div>
+      {submitted && (
+        <div className="score" style={{ position: 'absolute', top: '20px', right: '20px' }}>
+          Score: {score} / {quizData.questions.length}
+        </div>
+      )}
       <h1>{quizData.quizTitle} Quiz</h1>
       <p>{quizData.description}</p>
       {quizData.questions.map((question) => (
-        <div class='each-question' key={question.questionId}>
+        <div className='each-question' key={question.questionId}>
           {question.answers.length > 1 ? (
             <MultipleChoiceQuestion
               question={question}
@@ -92,9 +96,11 @@ function QuizPage() {
               onChange={handleAnswerChange}
             />
           )}
-          <div className={`feedback ${feedback[question.questionId] === 'Correct' ? 'correct' : 'incorrect'}`}>
-            {feedback[question.questionId]}
-          </div>
+          {submitted && (
+            <div className={`feedback ${feedback[question.questionId] === 'Correct' ? 'correct' : 'incorrect'}`}>
+              {feedback[question.questionId]}
+            </div>
+          )}
         </div>
       ))}
       <div id='submit-quiz'>
