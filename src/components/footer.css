@@ -15,4 +15,5 @@ footer {
 /* Footer Paragraph */
 footer p {
     margin: 0; /* Remove default margin */
+    color: #FFFFFF; /* White text color */
 }
