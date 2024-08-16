@@ -9,21 +9,24 @@
     width: 100%; /* Full width for responsiveness */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
     text-align: center; /* Center text within the card */
+    transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
 }
 
-/* Heading Styles for Question */
+.multiple-choice-question:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
 .multiple-choice-question h2 {
     color: #6A67CE; /* Soft purple for question text */
     font-size: 20px;
     margin-bottom: 15px;
 }
 
-/* Options Styles */
 .options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align options to the start for better readability */
-    gap: 10px; /* Space between options */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns for options */
+    gap: 20px; /* Space between options */
+    margin-top: 20px; /* Space between question text and options */
 }
 
 .options label {
@@ -31,8 +34,29 @@
     color: #333;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background-color: #F5F5FF; /* Light purple background for options */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for options */
+    cursor: pointer; /* Pointer cursor for interactive elements */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
 }
 
 .options input[type="radio"] {
-    margin-right: 10px;
+    display: none; /* Hide radio button */
+}
+
+.options label:hover {
+    background-color: #E0E0FF; /* Slightly darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.options input[type="radio"]:checked + label {
+    background-color: #D1C4E9; /* Different background for selected option */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Enhanced shadow for selected option */
+    transform: scale(1.05); /* Slightly enlarge selected option */
+    color: #fff; /* Change text color for better contrast */
+    font-weight: bold; /* Make text bold */
 }
