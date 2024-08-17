@@ -19,7 +19,8 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const [score, setScore] = useState(0);
-  const [submitted, setSubmitted] = useState(false); // Track if the quiz has been submitted
+  const [submitted, setSubmitted] = useState(false);
+  const [showHints, setShowHints] = useState({}); // Track which hints are shown
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -67,7 +68,11 @@ function QuizPage() {
 
     setFeedback(newFeedback);
     setScore(newScore);
-    setSubmitted(true); // Set submitted to true when the quiz is submitted
+    setSubmitted(true);
+  };
+
+  const toggleHint = (questionId) => {
+    setShowHints(prev => ({ ...prev, [questionId]: !prev[questionId] }));
   };
 
   if (!quizData) {
@@ -77,7 +82,7 @@ function QuizPage() {
   return (
     <div id='all-quiz-page'>
       {submitted && (
-        <div className="score" style={{ position: 'absolute', top: '20px', right: '20px' }}>
+        <div className="score">
           Score: {score} / {quizData.questions.length}
         </div>
       )}
@@ -96,6 +101,10 @@ function QuizPage() {
               onChange={handleAnswerChange}
             />
           )}
+          <button onClick={() => toggleHint(question.questionId)}>
+            {showHints[question.questionId] ? 'Hide Hint' : 'Show Hint'}
+          </button>
+          {showHints[question.questionId] && <p className="hint">{question.Hint}</p>}
           {submitted && (
             <div className={`feedback ${feedback[question.questionId] === 'Correct' ? 'correct' : 'incorrect'}`}>
               {feedback[question.questionId]}

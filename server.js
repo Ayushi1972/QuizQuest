@@ -46,7 +46,7 @@ app.get('/api/quiz/:title', (req, res) => {
     const { title } = req.params;
     const quizQuery = 'SELECT * FROM tblQuizzes WHERE Title = ?';
     const questionsQuery = `
-      SELECT q.Id as questionId, q.QuestionText, a.AnswerText, a.IsCorrect
+      SELECT q.Id as questionId, q.QuestionText, a.AnswerText, q.Hint, a.IsCorrect
       FROM tblQuestion q
       JOIN tblAnswers a ON q.Id = a.QuestionId
       WHERE q.QuizId = ?
@@ -68,6 +68,7 @@ app.get('/api/quiz/:title', (req, res) => {
                     acc.push({
                         questionId: row.questionId,
                         questionText: row.QuestionText,
+                        Hint: row.Hint,
                         answers: [{ text: row.AnswerText, isCorrect: row.IsCorrect }]
                     });
                 }

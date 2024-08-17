@@ -10,6 +10,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: relative;
 }
+
 /* Score Display */
 .score {
     position: absolute;
@@ -38,6 +39,7 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 28px;
+    text-shadow: 1px 1px 2px #ccc;
 }
 
 p {
@@ -52,6 +54,24 @@ h2 {
     color: #4682b4;
     font-size: 22px;
     margin-bottom: 15px;
+}
+
+/* Button Styles */
+button {
+    background-color: #6A67CE;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #5A56B9;
+    transform: scale(1.05);
 }
 
 /* Feedback Styles */
@@ -86,7 +106,7 @@ h2 {
     margin-top: 20px;
 }
 
-/* Button Styles */
+/* Submit Button Styles */
 #submit-quiz button {
     background-color: #6A67CE;
     color: #fff;
@@ -101,4 +121,15 @@ h2 {
 #submit-quiz button:hover {
     background-color: #5A56B9;
     transform: scale(1.05);
+}
+
+/* Hint Styles */
+.hint {
+    background-color: #e0f7fa;
+    color: #00796b;
+    border: 1px solid #b2ebf2;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 20px 0 10px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
