@@ -1,7 +1,7 @@
 // <!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/footer';
 import Home from './pages/Home';
@@ -16,6 +16,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/pages/Home" element={<Home />} />
+        <Route path="*" element={<Navigate to="/pages/Home" />} />
         <Route path="/pages/About" element={<About />} />
         <Route path="/pages/Categories" element={<Categories />} />
         <Route path="/pages/Create" element={<Create />} />
