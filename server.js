@@ -7,12 +7,11 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Himanshu@123!',
-    database: 'QuizQuest',
+    host: 'sql3.freesqldatabase.com',
+    user: 'sql3726623',
+    password: '9K8xr4XmJ9', // Replace with your actual password
+    database: 'sql3726623', // Correct database name
 });
-
 db.connect(err => {
     if (err) {
         console.error('Database connection failed:', err.stack);
@@ -22,7 +21,7 @@ db.connect(err => {
 });
 
 app.get('/api/quizzes', (req, res) => {
-    const query = 'SELECT Title, tc.CategoryName AS Category, Description, tc.ImageURL FROM QuizQuest.tblQuizzes AS quiz INNER JOIN QuizQuest.tblCategories AS tc ON tc.Id = quiz.Category;';
+    const query = 'SELECT Title, tc.CategoryName AS Category, Description, tc.ImageURL FROM tblQuizzes AS quiz INNER JOIN tblCategories AS tc ON tc.Id = quiz.Category;';
     db.query(query, (err, results) => {
         if (err) {
             console.error('Database query error:', err);
@@ -33,7 +32,7 @@ app.get('/api/quizzes', (req, res) => {
 });
 
 app.get('/api/categories', (req, res) => {
-    const query = 'SELECT CategoryName, ImageURL FROM QuizQuest.tblCategories';
+    const query = 'SELECT CategoryName, ImageURL FROM tblCategories';
     db.query(query, (err, results) => {
         if (err) {
             console.error('Database query error:', err);

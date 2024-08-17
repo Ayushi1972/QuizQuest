@@ -4,7 +4,7 @@
     padding: 40px 20px; /* Generous padding for spacing */
     border-radius: 12px; /* Rounded corners for the container */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card effect */
-    max-width: 1200px; /* Max width for larger screens */
+    max-width: 1350px; /* Max width for larger screens */
     margin: 20px auto; /* Center the container with space around */
     font-family: 'Poppins', sans-serif; /* Consistent font */
 }
@@ -28,8 +28,8 @@
 /* Grid container for the quizzes */
 #quizzes {
     display: grid; /* Use CSS Grid */
-    grid-template-columns: auto auto auto; /* Responsive columns */
-    gap: 20px; /* Space between grid items */
+    justify-items: center;
+    grid-template-columns: auto auto auto auto; /* Responsive columns */
 }
 
 /* Quiz Card styles */

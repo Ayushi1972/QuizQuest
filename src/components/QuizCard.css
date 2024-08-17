@@ -2,10 +2,10 @@
 .flip-card {
     background-color: transparent;
     width: 300px;
-    height: 200px;
+    height: 300px;
     perspective: 1000px;
     cursor: pointer;
-    margin: 20px;
+    margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     overflow: hidden;
@@ -43,7 +43,7 @@
 }
 
 .flip-card-back {
-    background-color: #2980b9;
+    background-color: #ffffff;
     color: #ffffff;
     transform: rotateY(180deg);
 }
