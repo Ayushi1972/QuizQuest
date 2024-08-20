@@ -33,6 +33,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Selected Option Highlighting */
+.selected-option {
+    background-color: #d1e7dd; /* Light green background */
+    border: 2px solid #0f5132; /* Dark green border */
+    border-radius: 8px;
+}
+
 /* Heading and Description */
 h1 {
     color: #4682b4;

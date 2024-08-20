@@ -92,8 +92,10 @@ function QuizPage() {
         <div className='each-question' key={question.questionId}>
           {question.answers.length > 1 ? (
             <MultipleChoiceQuestion
-              question={question}
-              onChange={handleAnswerChange}
+            key={question.questionId}
+            question={question}
+            onChange={handleAnswerChange}
+            selectedAnswer={answers[question.questionId]}
             />
           ) : (
             <TextInputQuestion
