@@ -11,7 +11,6 @@ function Home() {
         fetch('http://localhost:3001/api/quizzes')
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setQuizzes(data);})
             .catch(error => console.error('Error fetching quizzes:', error));
     }, []);

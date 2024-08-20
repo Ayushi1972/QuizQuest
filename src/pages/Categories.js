@@ -10,7 +10,6 @@ function Categories() {
     fetch('http://localhost:3001/api/categories')
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         setCategories(data);
       })
       .catch(error => console.error('Error fetching categories:', error));
