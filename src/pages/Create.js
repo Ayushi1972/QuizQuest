@@ -1,97 +1,65 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import './Create.css';
 
 function CreateQuiz() {
-  // State to store the quiz title
   const [title, setTitle] = useState('');
-  // State to store the quiz description
   const [description, setDescription] = useState('');
-  // State to store the selected category
   const [category, setCategory] = useState('');
-  // State to store the timer
   const [timer, setTimer] = useState('5');
-  // State to store the list of questions
   const [questions, setQuestions] = useState([{ question: '', answer: '', hint: '', imageUrl: '' }]);
-  // State to store validation errors
   const [errors, setErrors] = useState({});
 
-  // Function to validate the form inputs
   const validateForm = () => {
     const newErrors = {};
+    if (!title.trim()) newErrors.title = 'Quiz title cannot be empty';
+    if (!description.trim()) newErrors.description = 'Quiz description cannot be empty';
+    if (!category) newErrors.category = 'Please select a category';
+    if (questions.length === 0) newErrors.questions = "Must have at least 1 question";
 
-    // Validate quiz title
-    if (!title.trim()) {
-      newErrors.title = 'Quiz title cannot be empty';
-    }
-
-    // Validate quiz description
-    if (!description.trim()) {
-      newErrors.description = 'Quiz description cannot be empty';
-    }
-
-    // Validate category selection
-    if (!category) {
-      newErrors.category = 'Please select a category';
-    }
-
-    if (questions.length === 0) {
-      newErrors.questions = "Must have at least 1 question";
-    }
-
-    // Validate each question and answer
     questions.forEach((q, index) => {
-      if (!q.question.trim()) {
-        newErrors[`question${index}`] = `Question ${index + 1} cannot be empty`;
-      }
-      if (!q.answer.trim()) {
-        newErrors[`answer${index}`] = `Answer for question ${index + 1} cannot be empty`;
-      }
+      if (!q.question.trim()) newErrors[`question${index}`] = `Question ${index + 1} cannot be empty`;
+      if (!q.answer.trim()) newErrors[`answer${index}`] = `Answer for question ${index + 1} cannot be empty`;
     });
 
-    // Update the errors state
     setErrors(newErrors);
-    // Return true if there are no errors
     return Object.keys(newErrors).length === 0;
   };
 
-  // Function to handle form submission
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     if (validateForm()) {
-      // If form is valid, proceed with submission
       alert('Form submitted');
     }
   };
 
-  // Function to handle changes in question input fields
   const handleQuestionChange = (index, field, value) => {
     const newQuestions = [...questions];
-    newQuestions[index][field] = value; // Update the specific field of the question
-    setQuestions(newQuestions); // Update the questions state
+    newQuestions[index][field] = value;
+    setQuestions(newQuestions);
   };
 
-  // Function to add a new question to the form
   const addQuestion = () => {
-    const newQuestion = { question: '', answer: '', hint: '', imageUrl: '' }; // New question template
-    setQuestions(prevQuestions => [...prevQuestions, newQuestion]); // Add new question to the list
+    const newQuestion = { question: '', answer: '', hint: '', imageUrl: '' };
+    setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
   };
 
-  // Function to delete a question from the form
   const deleteQuestion = (index) => {
-    const newQuestions = questions.filter((_, i) => i !== index); // Remove the question at the specified index
-    setQuestions(newQuestions); // Update the questions state with the new array
+    const newQuestions = questions.filter((_, i) => i !== index);
+    setQuestions(newQuestions);
   };
 
-  // Function to handle drag end
-  const handleDragEnd = (result) => {
-    if (!result.destination) return; // If the item is dropped outside the list, do nothing
-
-    const reorderedQuestions = Array.from(questions);
-    const [movedQuestion] = reorderedQuestions.splice(result.source.index, 1);
-    reorderedQuestions.splice(result.destination.index, 0, movedQuestion);
-
-    setQuestions(reorderedQuestions); // Update the questions state with the reordered list
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setQuestions((items) => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
   };
 
   return (
@@ -103,11 +71,11 @@ function CreateQuiz() {
             type="text"
             id="quiz-title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)} // Update title state on change
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter the quiz title"
             aria-required="true"
           />
-          {errors.title && <div className="error">{errors.title}</div>} {/* Display title error if any */}
+          {errors.title && <div className="error">{errors.title}</div>}
         </div>
 
         <div>
@@ -115,11 +83,11 @@ function CreateQuiz() {
           <textarea
             id="quiz-description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)} // Update description state on change
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter a brief description of the quiz"
             aria-required="true"
           />
-          {errors.description && <div className="error">{errors.description}</div>} {/* Display description error if any */}
+          {errors.description && <div className="error">{errors.description}</div>}
         </div>
 
         <div>
@@ -127,7 +95,7 @@ function CreateQuiz() {
           <select
             id="category"
             value={category}
-            onChange={(e) => setCategory(e.target.value)} // Update category state on change
+            onChange={(e) => setCategory(e.target.value)}
             aria-required="true"
           >
             <option value="">Select a category</option>
@@ -138,7 +106,7 @@ function CreateQuiz() {
             <option value="sports">Sports</option>
             <option value="geography">Geography</option>
           </select>
-          {errors.category && <div className="error">{errors.category}</div>} {/* Display category error if any */}
+          {errors.category && <div className="error">{errors.category}</div>}
         </div>
 
         <div>
@@ -156,78 +124,72 @@ function CreateQuiz() {
           </select>
         </div>
 
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="questionsContainer">
-            {(provided) => (
-              <div
-                id="questionsContainer"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {questions.map((q, index) => (
-                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
-                    {(provided) => (
-                      <div
-                        className="question"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <div>
-                          <label>Question {index + 1}:</label>
-                          <input
-                            type="text"
-                            name="question"
-                            value={q.question}
-                            onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} // Update question text
-                            required
-                          />
-                          {errors[`question${index}`] && <div className="error">{errors[`question${index}`]}</div>} {/* Display question error if any */}
-                        </div>
-                        <div>
-                          <label>Answer:</label>
-                          <input
-                            type="text"
-                            name="answer"
-                            value={q.answer}
-                            onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} // Update answer text
-                            required
-                          />
-                          {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>} {/* Display answer error if any */}
-                        </div>
-                        <div>
-                          <label>Hint:</label>
-                          <input
-                            type="text"
-                            name="hint"
-                            value={q.hint}
-                            onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)} // Update hint text
-                          />
-                        </div>
-                        <div>
-                          <label>Image URL:</label>
-                          <input
-                            type="text"
-                            name="imageUrl"
-                            value={q.imageUrl}
-                            onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)} // Update image URL
-                          />
-                        </div>
-                        <button type="button" onClick={() => deleteQuestion(index)}>Delete</button> {/* Button to delete the question */}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={questions} strategy={verticalListSortingStrategy}>
+            {questions.map((q, index) => (
+              <SortableItem key={index} id={index} question={q} index={index} handleQuestionChange={handleQuestionChange} deleteQuestion={deleteQuestion} errors={errors} />
+            ))}
+          </SortableContext>
+        </DndContext>
 
-        <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button> {/* Button to add new question */}
+        <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button>
       </div>
-      <button type="submit">Create Quiz</button> {/* Submit button for the form */}
+      <button type="submit">Create Quiz</button>
     </form>
+  );
+}
+
+function SortableItem({ id, question, index, handleQuestionChange, deleteQuestion, errors }) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div className="question" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <div>
+        <label>Question {index + 1}:</label>
+        <input
+          type="text"
+          name="question"
+          value={question.question}
+          onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
+          required
+        />
+        {errors[`question${index}`] && <div className="error">{errors[`question${index}`]}</div>}
+      </div>
+      <div>
+        <label>Answer:</label>
+        <input
+          type="text"
+          name="answer"
+          value={question.answer}
+          onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
+          required
+        />
+        {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>}
+      </div>
+      <div>
+        <label>Hint:</label>
+        <input
+          type="text"
+          name="hint"
+          value={question.hint}
+          onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Image URL:</label>
+        <input
+          type="text"
+          name="imageUrl"
+          value={question.imageUrl}
+          onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)}
+        />
+      </div>
+      <button type="button" onClick={() => deleteQuestion(index)}>Delete</button>
+    </div>
   );
 }
 
