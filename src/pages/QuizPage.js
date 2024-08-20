@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TextInputQuestion from '../components/TextInputQuestion';
 import MultipleChoiceQuestion from '../components/MultipleChoiceQuestion';
+import ResultModal from '../components/ResultAnimation'; // Import the ResultModal component
 import './QuizPage.css';
 
 // Utility function to shuffle an array
@@ -20,7 +21,8 @@ function QuizPage() {
   const [feedback, setFeedback] = useState({});
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [showHints, setShowHints] = useState({}); // Track which hints are shown
+  const [showHints, setShowHints] = useState({});
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -47,10 +49,12 @@ function QuizPage() {
     fetchQuizData();
   }, [title]);
 
+  // Handle answer changes
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
+  // Handle quiz submission
   const handleSubmit = () => {
     let newFeedback = {};
     let newScore = 0;
@@ -69,10 +73,17 @@ function QuizPage() {
     setFeedback(newFeedback);
     setScore(newScore);
     setSubmitted(true);
+    setShowModal(true); // Show modal on submission
   };
 
+  // Toggle hint visibility
   const toggleHint = (questionId) => {
     setShowHints(prev => ({ ...prev, [questionId]: !prev[questionId] }));
+  };
+
+  // Close modal handler
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   if (!quizData) {
@@ -81,10 +92,12 @@ function QuizPage() {
 
   return (
     <div id='all-quiz-page'>
-      {submitted && (
-        <div className="score">
-          Score: {score} / {quizData.questions.length}
-        </div>
+      {showModal && (
+        <ResultModal
+          score={score}
+          totalQuestions={quizData.questions.length}
+          onClose={closeModal}
+        />
       )}
       <h1>{quizData.quizTitle} Quiz</h1>
       <p>{quizData.description}</p>
@@ -92,10 +105,10 @@ function QuizPage() {
         <div className='each-question' key={question.questionId}>
           {question.answers.length > 1 ? (
             <MultipleChoiceQuestion
-            key={question.questionId}
-            question={question}
-            onChange={handleAnswerChange}
-            selectedAnswer={answers[question.questionId]}
+              key={question.questionId}
+              question={question}
+              onChange={handleAnswerChange}
+              selectedAnswer={answers[question.questionId]}
             />
           ) : (
             <TextInputQuestion
