@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { DndContext, closestCenter } from '@dnd-kit/core';
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './Create.css';
+
+const ItemTypes = {
+  QUESTION: 'question',
+};
 
 function CreateQuiz() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [timer, setTimer] = useState('5');
-  const [questions, setQuestions] = useState([{ question: '', answer: '', hint: '', imageUrl: '' }]);
+  const [questions, setQuestions] = useState([{ id: 1, question: '', answer: '', hint: '', imageUrl: '' }]);
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -42,7 +45,7 @@ function CreateQuiz() {
   };
 
   const addQuestion = () => {
-    const newQuestion = { question: '', answer: '', hint: '', imageUrl: '' };
+    const newQuestion = { id: questions.length + 1, question: '', answer: '', hint: '', imageUrl: '' };
     setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
   };
 
@@ -51,103 +54,128 @@ function CreateQuiz() {
     setQuestions(newQuestions);
   };
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-    if (active.id !== over.id) {
-      setQuestions((items) => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
+  const moveQuestion = (dragIndex, hoverIndex) => {
+    const draggedQuestion = questions[dragIndex];
+    const newQuestions = [...questions];
+    newQuestions.splice(dragIndex, 1);
+    newQuestions.splice(hoverIndex, 0, draggedQuestion);
+    setQuestions(newQuestions);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div id="create-form">
-        <div>
-          <label htmlFor="quiz-title">Quiz Title</label>
-          <input
-            type="text"
-            id="quiz-title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter the quiz title"
-            aria-required="true"
-          />
-          {errors.title && <div className="error">{errors.title}</div>}
+    <DndProvider backend={HTML5Backend}>
+      <form onSubmit={handleSubmit}>
+        <div id="create-form">
+          <div>
+            <label htmlFor="quiz-title">Quiz Title</label>
+            <input
+              type="text"
+              id="quiz-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter the quiz title"
+              aria-required="true"
+            />
+            {errors.title && <div className="error">{errors.title}</div>}
+          </div>
+
+          <div>
+            <label htmlFor="quiz-description">Description</label>
+            <textarea
+              id="quiz-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter a brief description of the quiz"
+              aria-required="true"
+            />
+            {errors.description && <div className="error">{errors.description}</div>}
+          </div>
+
+          <div>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              aria-required="true"
+            >
+              <option value="">Select a category</option>
+              <option value="music">Music</option>
+              <option value="history">History</option>
+              <option value="science">Science</option>
+              <option value="pop-culture">Pop Culture</option>
+              <option value="sports">Sports</option>
+              <option value="geography">Geography</option>
+            </select>
+            {errors.category && <div className="error">{errors.category}</div>}
+          </div>
+
+          <div>
+            <label htmlFor="timer">Set Timer (minutes):</label>
+            <select
+              id="timer"
+              name="timer"
+              value={timer}
+              onChange={(e) => setTimer(e.target.value)}>
+              {
+                Array.from({ length: 21 }, (_, i) => (
+                  <option value={i} key={i}>{i}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          {questions.map((q, index) => (
+            <Question
+              key={q.id}
+              index={index}
+              id={q.id}
+              question={q}
+              moveQuestion={moveQuestion}
+              handleQuestionChange={handleQuestionChange}
+              deleteQuestion={deleteQuestion}
+              errors={errors}
+            />
+          ))}
+
+          <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button>
         </div>
-
-        <div>
-          <label htmlFor="quiz-description">Description</label>
-          <textarea
-            id="quiz-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter a brief description of the quiz"
-            aria-required="true"
-          />
-          {errors.description && <div className="error">{errors.description}</div>}
-        </div>
-
-        <div>
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            aria-required="true"
-          >
-            <option value="">Select a category</option>
-            <option value="music">Music</option>
-            <option value="history">History</option>
-            <option value="science">Science</option>
-            <option value="pop-culture">Pop Culture</option>
-            <option value="sports">Sports</option>
-            <option value="geography">Geography</option>
-          </select>
-          {errors.category && <div className="error">{errors.category}</div>}
-        </div>
-
-        <div>
-          <label htmlFor="timer">Set Timer (minutes):</label>
-          <select
-            id="timer"
-            name="timer"
-            value={timer}
-            onChange={(e) => setTimer(e.target.value)}>
-            {
-              Array.from({ length: 21 }, (_, i) => (
-                <option value={i} key={i}>{i}</option>
-              ))
-            }
-          </select>
-        </div>
-
-        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={questions} strategy={verticalListSortingStrategy}>
-            {questions.map((q, index) => (
-              <SortableItem key={index} id={index} question={q} index={index} handleQuestionChange={handleQuestionChange} deleteQuestion={deleteQuestion} errors={errors} />
-            ))}
-          </SortableContext>
-        </DndContext>
-
-        <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button>
-      </div>
-      <button type="submit">Create Quiz</button>
-    </form>
+        <button type="submit">Create Quiz</button>
+      </form>
+    </DndProvider>
   );
 }
 
-function SortableItem({ id, question, index, handleQuestionChange, deleteQuestion, errors }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+function Question({ id, index, question, moveQuestion, handleQuestionChange, deleteQuestion, errors }) {
+  const ref = React.useRef(null);
+  const [, drop] = useDrop({
+    accept: ItemTypes.QUESTION,
+    hover(item) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      moveQuestion(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.QUESTION,
+    item: { id, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  drag(drop(ref));
 
   return (
-    <div className="question" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={ref} className="question" style={{ opacity: isDragging ? 0.5 : 1 }}>
       <div>
         <label>Question {index + 1}:</label>
         <input
