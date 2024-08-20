@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './Create.css';
 
 function CreateQuiz() {
@@ -34,8 +35,8 @@ function CreateQuiz() {
       newErrors.category = 'Please select a category';
     }
 
-    if (questions.length === 0){
-      newErrors.questions = "Must have at least 1 question"
+    if (questions.length === 0) {
+      newErrors.questions = "Must have at least 1 question";
     }
 
     // Validate each question and answer
@@ -80,6 +81,17 @@ function CreateQuiz() {
   const deleteQuestion = (index) => {
     const newQuestions = questions.filter((_, i) => i !== index); // Remove the question at the specified index
     setQuestions(newQuestions); // Update the questions state with the new array
+  };
+
+  // Function to handle drag end
+  const handleDragEnd = (result) => {
+    if (!result.destination) return; // If the item is dropped outside the list, do nothing
+
+    const reorderedQuestions = Array.from(questions);
+    const [movedQuestion] = reorderedQuestions.splice(result.source.index, 1);
+    reorderedQuestions.splice(result.destination.index, 0, movedQuestion);
+
+    setQuestions(reorderedQuestions); // Update the questions state with the reordered list
   };
 
   return (
@@ -144,53 +156,73 @@ function CreateQuiz() {
           </select>
         </div>
 
-        <div id="questionsContainer">
-          {questions.map((q, index) => (
-            <div className="question" key={index}>
-              <div>
-                <label>Question {index + 1}:</label>
-                <input
-                  type="text"
-                  name="question"
-                  value={q.question}
-                  onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} // Update question text
-                  required
-                />
-                {errors[`question${index}`] && <div className="error">{errors[`question${index}`]}</div>} {/* Display question error if any */}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="questionsContainer">
+            {(provided) => (
+              <div
+                id="questionsContainer"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {questions.map((q, index) => (
+                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    {(provided) => (
+                      <div
+                        className="question"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <div>
+                          <label>Question {index + 1}:</label>
+                          <input
+                            type="text"
+                            name="question"
+                            value={q.question}
+                            onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} // Update question text
+                            required
+                          />
+                          {errors[`question${index}`] && <div className="error">{errors[`question${index}`]}</div>} {/* Display question error if any */}
+                        </div>
+                        <div>
+                          <label>Answer:</label>
+                          <input
+                            type="text"
+                            name="answer"
+                            value={q.answer}
+                            onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} // Update answer text
+                            required
+                          />
+                          {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>} {/* Display answer error if any */}
+                        </div>
+                        <div>
+                          <label>Hint:</label>
+                          <input
+                            type="text"
+                            name="hint"
+                            value={q.hint}
+                            onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)} // Update hint text
+                          />
+                        </div>
+                        <div>
+                          <label>Image URL:</label>
+                          <input
+                            type="text"
+                            name="imageUrl"
+                            value={q.imageUrl}
+                            onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)} // Update image URL
+                          />
+                        </div>
+                        <button type="button" onClick={() => deleteQuestion(index)}>Delete</button> {/* Button to delete the question */}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
               </div>
-              <div>
-                <label>Answer:</label>
-                <input
-                  type="text"
-                  name="answer"
-                  value={q.answer}
-                  onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} // Update answer text
-                  required
-                />
-                {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>} {/* Display answer error if any */}
-              </div>
-              <div>
-                <label>Hint:</label>
-                <input
-                  type="text"
-                  name="hint"
-                  value={q.hint}
-                  onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)} // Update hint text
-                />
-              </div>
-              <div>
-                <label>Image URL:</label>
-                <input
-                  type="text"
-                  name="imageUrl"
-                  value={q.imageUrl}
-                  onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)} // Update image URL
-                />
-              </div>
-              <button type="button" onClick={() => deleteQuestion(index)}>Delete</button> {/* Button to delete the question */}
-            </div>
-          ))}
-        </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
         <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button> {/* Button to add new question */}
       </div>
