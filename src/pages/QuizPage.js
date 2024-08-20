@@ -22,7 +22,7 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [showHints, setShowHints] = useState({});
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -49,12 +49,10 @@ function QuizPage() {
     fetchQuizData();
   }, [title]);
 
-  // Handle answer changes
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
-  // Handle quiz submission
   const handleSubmit = () => {
     let newFeedback = {};
     let newScore = 0;
@@ -73,15 +71,13 @@ function QuizPage() {
     setFeedback(newFeedback);
     setScore(newScore);
     setSubmitted(true);
-    setShowModal(true); // Show modal on submission
+    setShowModal(true);
   };
 
-  // Toggle hint visibility
   const toggleHint = (questionId) => {
     setShowHints(prev => ({ ...prev, [questionId]: !prev[questionId] }));
   };
 
-  // Close modal handler
   const closeModal = () => {
     setShowModal(false);
   };

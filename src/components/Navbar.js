@@ -1,15 +1,26 @@
-// <!-- Created by: Ayushi Amin ; Last Edited: Aug 2, 2024 -->
-
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
-  const navigate = useNavigate(); // Initialize navigate
+  const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
 
-  // Function to handle redirection
+  useEffect(() => {
+    fetch('http://localhost:3001/api/quizzes')
+      .then(response => response.json())
+      .then(data => {
+        setQuizzes(data);
+      })
+      .catch(error => console.error('Error fetching quizzes:', error));
+  }, []);
+
   const chooseRandomQuiz = () => {
-    navigate('/pages/Quiz'); // Redirect to About page
+    if (quizzes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * quizzes.length);
+      const randomQuiz = quizzes[randomIndex];
+      navigate(`/quiz/${encodeURIComponent(randomQuiz.Title)}`);
+    }
   };
 
   return (
@@ -21,10 +32,9 @@ function Navbar() {
         <li><Link to="/pages/Categories">Categories</Link></li>
         <li><Link to="/pages/Create">Create Your Own Quiz</Link></li>
         <li>
-          <button onClick={chooseRandomQuiz}>Random Quiz</button> {/* Corrected onClick */}
+          <button onClick={chooseRandomQuiz}>Random Quiz</button>
         </li>
       </ul>
-
     </nav>
   );
 }
