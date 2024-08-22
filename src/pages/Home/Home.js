@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuizCard from '../components/QuizCard';
+import QuizCard from '../../components/QuizCard/QuizCard';
 import $ from 'jquery';
 import './Home.css';
 

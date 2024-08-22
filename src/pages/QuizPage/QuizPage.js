@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TextInputQuestion from '../components/TextInputQuestion';
-import MultipleChoiceQuestion from '../components/MultipleChoiceQuestion';
-import ResultModal from '../components/ResultAnimation';
+import TextInputQuestion from '../../components/TextInputQuestion/TextInputQuestion';
+import MultipleChoiceQuestion from '../../components/MultipleChoiceQuestion/MultipleChoiceQuestion';
+import ResultModal from '../../components/ResultAnimation/ResultAnimation';
 import $ from 'jquery';
 import './QuizPage.css';
 

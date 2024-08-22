@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import $ from 'jquery';
 import './Navbar.css';
 
 function Navbar() {
@@ -7,12 +8,17 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/quizzes')
-      .then(response => response.json())
-      .then(data => {
+    // Use jQuery to fetch quizzes
+    $.ajax({
+      url: 'http://localhost:3001/api/quizzes',
+      method: 'GET',
+      success: (data) => {
         setQuizzes(data);
-      })
-      .catch(error => console.error('Error fetching quizzes:', error));
+      },
+      error: (jqXHR, textStatus, errorThrown) => {
+        console.error('Error fetching quizzes:', textStatus, errorThrown);
+      }
+    });
   }, []);
 
   const chooseRandomQuiz = () => {
