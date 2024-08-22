@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 import './Categories.css';
 
 function Categories() {
@@ -11,6 +12,8 @@ function Categories() {
       .then(response => response.json())
       .then(data => {
         setCategories(data);
+        // Use jQuery to animate the categories after they are loaded
+        $('.category-card').hide().fadeIn(1000);
       })
       .catch(error => console.error('Error fetching categories:', error));
   }, []);
@@ -32,7 +35,6 @@ function Categories() {
 
   return (
     <div className="categories">
-
       <div id="sort-dropdown">
         <label htmlFor="sort">Sort by: </label>
         <select id="sort" value={sortOrder} onChange={handleSortChange}>

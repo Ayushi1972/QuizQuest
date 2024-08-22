@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizCard from '../components/QuizCard';
+import $ from 'jquery';
 import './Home.css';
 
 function Home() {
@@ -11,7 +12,10 @@ function Home() {
         fetch('http://localhost:3001/api/quizzes')
             .then(response => response.json())
             .then(data => {
-                setQuizzes(data);})
+                setQuizzes(data);
+                // Use jQuery to animate the quiz cards after they are loaded
+                $('#quizzes .quiz-card').hide().fadeIn(1000);
+            })
             .catch(error => console.error('Error fetching quizzes:', error));
     }, []);
 
@@ -32,6 +36,7 @@ function Home() {
                         image={quiz.ImageURL}
                         description={quiz.Description}
                         onClick={() => handleCardClick(quiz.Title)}
+                        className="quiz-card"
                     />
                 ))}
             </div>

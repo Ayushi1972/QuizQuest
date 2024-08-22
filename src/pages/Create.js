@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import $ from 'jquery';
 import './Create.css';
 
 const ItemTypes = {
@@ -47,6 +48,10 @@ function CreateQuiz() {
   const addQuestion = () => {
     const newQuestion = { id: questions.length + 1, question: '', answer: '', hint: '', imageUrl: '' };
     setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
+    // Use jQuery to animate the new question
+    setTimeout(() => {
+      $(`#question-${newQuestion.id}`).hide().fadeIn(1000);
+    }, 0);
   };
 
   const deleteQuestion = (index) => {
@@ -175,7 +180,7 @@ function Question({ id, index, question, moveQuestion, handleQuestionChange, del
   drag(drop(ref));
 
   return (
-    <div ref={ref} className="question" style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={ref} id={`question-${id}`} className="question" style={{ opacity: isDragging ? 0.5 : 1 }}>
       <div>
         <label>Question {index + 1}:</label>
         <input

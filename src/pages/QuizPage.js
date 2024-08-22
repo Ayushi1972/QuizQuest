@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TextInputQuestion from '../components/TextInputQuestion';
 import MultipleChoiceQuestion from '../components/MultipleChoiceQuestion';
-import ResultModal from '../components/ResultAnimation'; // Import the ResultModal component
+import ResultModal from '../components/ResultAnimation';
+import $ from 'jquery';
 import './QuizPage.css';
 
-// Utility function to shuffle an array
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -30,7 +30,6 @@ function QuizPage() {
         const response = await fetch(`http://localhost:3001/api/quiz/${encodeURIComponent(title)}`);
         const data = await response.json();
 
-        // Shuffle answers for each question
         const shuffledQuestions = data.questions.map(question => {
           const shuffledAnswers = shuffleArray([...question.answers]);
           return {
@@ -41,6 +40,9 @@ function QuizPage() {
         });
 
         setQuizData({ ...data, questions: shuffledQuestions });
+
+        // Use jQuery to fade in the quiz content
+        $('#all-quiz-page').hide().fadeIn(1000);
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       }
@@ -79,7 +81,10 @@ function QuizPage() {
   };
 
   const closeModal = () => {
-    setShowModal(false);
+    // Use jQuery to fade out the modal
+    $('.modal-overlay').fadeOut(500, () => {
+      setShowModal(false);
+    });
   };
 
   if (!quizData) {
@@ -90,6 +95,7 @@ function QuizPage() {
     <div id='all-quiz-page'>
       {showModal && (
         <ResultModal
+          id="result-modal"
           score={score}
           totalQuestions={quizData.questions.length}
           onClose={closeModal}
