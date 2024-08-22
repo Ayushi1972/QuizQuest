@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useForm, Controller } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import $ from 'jquery';
 import './Create.css';
 
@@ -9,49 +12,29 @@ const ItemTypes = {
 };
 
 function CreateQuiz() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [timer, setTimer] = useState('5');
+  const { register, handleSubmit, control, formState: { errors } } = useForm();
   const [questions, setQuestions] = useState([{ id: 1, question: '', answer: '', hint: '', imageUrl: '' }]);
-  const [errors, setErrors] = useState({});
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!title.trim()) newErrors.title = 'Quiz title cannot be empty';
-    if (!description.trim()) newErrors.description = 'Quiz description cannot be empty';
-    if (!category) newErrors.category = 'Please select a category';
-    if (questions.length === 0) newErrors.questions = "Must have at least 1 question";
-
-    questions.forEach((q, index) => {
-      if (!q.question.trim()) newErrors[`question${index}`] = `Question ${index + 1} cannot be empty`;
-      if (!q.answer.trim()) newErrors[`answer${index}`] = `Answer for question ${index + 1} cannot be empty`;
-    });
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const onSubmit = (data) => {
+    if (questions.length === 0) {
+      toast.error("Must have at least 1 question");
+      return;
+    }
+    toast.success('Form submitted successfully!');
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (validateForm()) {
-      alert('Form submitted');
-    }
+  const addQuestion = () => {
+    const newQuestion = { id: questions.length + 1, question: '', answer: '', hint: '', imageUrl: '' };
+    setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
+    setTimeout(() => {
+      $(`#question-${newQuestion.id}`).hide().fadeIn(1000);
+    }, 0);
   };
 
   const handleQuestionChange = (index, field, value) => {
     const newQuestions = [...questions];
     newQuestions[index][field] = value;
     setQuestions(newQuestions);
-  };
-
-  const addQuestion = () => {
-    const newQuestion = { id: questions.length + 1, question: '', answer: '', hint: '', imageUrl: '' };
-    setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
-    // Use jQuery to animate the new question
-    setTimeout(() => {
-      $(`#question-${newQuestion.id}`).hide().fadeIn(1000);
-    }, 0);
   };
 
   const deleteQuestion = (index) => {
@@ -69,39 +52,36 @@ function CreateQuiz() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div id="create-form">
           <div>
             <label htmlFor="quiz-title">Quiz Title</label>
             <input
               type="text"
               id="quiz-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              {...register('title', { required: 'Quiz title cannot be empty' })}
               placeholder="Enter the quiz title"
               aria-required="true"
             />
-            {errors.title && <div className="error">{errors.title}</div>}
+            {errors.title && <div className="error">{errors.title.message}</div>}
           </div>
 
           <div>
             <label htmlFor="quiz-description">Description</label>
             <textarea
               id="quiz-description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              {...register('description', { required: 'Quiz description cannot be empty' })}
               placeholder="Enter a brief description of the quiz"
               aria-required="true"
             />
-            {errors.description && <div className="error">{errors.description}</div>}
+            {errors.description && <div className="error">{errors.description.message}</div>}
           </div>
 
           <div>
             <label htmlFor="category">Category</label>
             <select
               id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              {...register('category', { required: 'Please select a category' })}
               aria-required="true"
             >
               <option value="">Select a category</option>
@@ -112,22 +92,23 @@ function CreateQuiz() {
               <option value="sports">Sports</option>
               <option value="geography">Geography</option>
             </select>
-            {errors.category && <div className="error">{errors.category}</div>}
+            {errors.category && <div className="error">{errors.category.message}</div>}
           </div>
 
           <div>
             <label htmlFor="timer">Set Timer (minutes):</label>
-            <select
-              id="timer"
+            <Controller
               name="timer"
-              value={timer}
-              onChange={(e) => setTimer(e.target.value)}>
-              {
-                Array.from({ length: 21 }, (_, i) => (
-                  <option value={i} key={i}>{i}</option>
-                ))
-              }
-            </select>
+              control={control}
+              defaultValue="5"
+              render={({ field }) => (
+                <select {...field}>
+                  {Array.from({ length: 21 }, (_, i) => (
+                    <option value={i} key={i}>{i}</option>
+                  ))}
+                </select>
+              )}
+            />
           </div>
 
           {questions.map((q, index) => (
@@ -147,6 +128,7 @@ function CreateQuiz() {
         </div>
         <button type="submit">Create Quiz</button>
       </form>
+      <ToastContainer />
     </DndProvider>
   );
 }
