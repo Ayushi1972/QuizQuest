@@ -1,10 +1,20 @@
 import React from 'react';
-import './ResultAnimation.css'; // CSS file for modal styles
+import $ from 'jquery';
+import './ResultAnimation.css';
 
-// ResultModal class component to display a popup with the result animation
 class ResultModal extends React.Component {
+  componentDidMount() {
+    // Use jQuery to animate the modal's appearance
+    $('.modal-content').hide().fadeIn(300);
+  }
+
+  handleClose = () => {
+    // Use jQuery to animate the modal's disappearance
+    $('.modal-content').fadeOut(300, this.props.onClose);
+  };
+
   render() {
-    const { score, totalQuestions, onClose } = this.props;
+    const { score, totalQuestions } = this.props;
     const percentage = (score / totalQuestions) * 100;
     let message = '';
 
@@ -21,7 +31,7 @@ class ResultModal extends React.Component {
         <div className="modal-content">
           <h2>{message}</h2>
           <p>Your score: {score} / {totalQuestions}</p>
-          <button onClick={onClose}>Close</button>
+          <button onClick={this.handleClose}>Close</button>
         </div>
       </div>
     );
