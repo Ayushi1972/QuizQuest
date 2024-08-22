@@ -10,7 +10,7 @@ function Navbar() {
   useEffect(() => {
     // Use jQuery to fetch quizzes
     $.ajax({
-      url: 'http://localhost:3001/api/quizzes',
+      url: 'http://localhost:3001/api/quizzes', // Fetches all quizzes
       method: 'GET',
       success: (data) => {
         setQuizzes(data);

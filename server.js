@@ -21,8 +21,14 @@ db.connect(err => {
 });
 
 app.get('/api/quizzes', (req, res) => {
-    const query = 'SELECT Title, tc.CategoryName AS Category, Description, tc.ImageURL FROM tblQuizzes AS quiz INNER JOIN tblCategories AS tc ON tc.Id = quiz.Category;';
-    db.query(query, (err, results) => {
+    const category = req.query.category;
+    const query = category ? 
+        `SELECT Title, tc.CategoryName AS Category, Description, tc.ImageURL FROM tblQuizzes AS quiz ` + 
+        `INNER JOIN tblCategories AS tc ON tc.Id = quiz.Category WHERE tc.CategoryName = ?;` : 
+        `SELECT Title, tc.CategoryName AS Category, Description, tc.ImageURL FROM tblQuizzes AS quiz ` + 
+        `INNER JOIN tblCategories AS tc ON tc.Id = quiz.Category;`;
+
+    db.query(query, category ? [category] : [], (err, results) => {
         if (err) {
             console.error('Database query error:', err);
             return res.status(500).send(err);

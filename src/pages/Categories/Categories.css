@@ -1,101 +1,123 @@
-/* Container for Categories */
+/* Categories.css Updated */
+
 .categories {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex; 
+    flex-direction: column;
+}
+
+#sort-dropdown {
+    margin-bottom: 20px;
     display: flex;
-    flex-wrap: wrap; /* Allows the cards to wrap onto the next line */
-    gap: 20px; /* Space between the cards */
-    padding: 30px;
-    background-color: #F5F5FF; /* Light background to complement the navbar */
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
-    max-width: 1200px; /* Limit the width of the container */
-    margin: 55px auto; /* Center the container */
+    align-items: center;
+    justify-content: flex-end;
 }
 
-/* Individual Category Card */
+#sort-dropdown label {
+    font-weight: bold;
+    color: #6A67CE; /* Purple accent for labels */
+    margin-right: 10px; /* Space between label and dropdown */
+}
+
+#sort-dropdown select {
+    padding: 10px;
+    border: 2px solid #6A67CE; /* Purple border for dropdown */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: #FFFFFF; /* White background for dropdown */
+    cursor: pointer;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px; /* Space between cards */
+}
+
 .category-card {
-    background-color: #FFFFFF; /* White background for card */
+    background-color: #FFFFFF; /* White background for cards */
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
-    overflow: hidden; /* Ensures content stays within rounded corners */
-    flex: 1 1 calc(33.333% - 20px); /* Responsive width for 3 cards per row */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
-    max-width: calc(33.333% - 20px); /* Ensure cards don't exceed container width */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 calc(24% - 20px); /* Responsive cards with slight adjustments */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
 }
 
-/* Category Card Image */
 .category-card img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
-    padding-bottom: 30px;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
-/* Category Card Heading */
 .category-card h2 {
     color: #6A67CE; /* Soft purple to match your theme */
     font-size: 24px;
     font-weight: 600;
-    padding: 15px;
     margin: 0;
-    text-align: center;
 }
 
-/* Link Styles */
-.category-card a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: inherit; /* Inherit color for better accessibility */
-}
-
-/* Hover Effects for Cards */
 .category-card:hover {
-    transform: translateY(-5px); /* Slightly lift the card on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+    transform: translateY(-4px); /* Lift effect on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
-/* Dropdown Menu Styles */
-#sort-dropdown {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+.quizzes {
+    margin-top: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.quizzes h3 {
     width: 100%;
 }
 
-#sort {
-    padding: 10px;
-    border: 1px solid #6A67CE; /* Border color to match the theme */
-    border-radius: 8px;
-    background-color: #FFFFFF; /* White background for dropdown */
-    font-size: 14px;
-    color: #333; /* Text color */
-    appearance: none; /* Remove default styling */
+.quiz-card {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1 1 calc(32% - 20px); /* Three cards per row */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    text-align: center;
     cursor: pointer;
-    transition: border-color 0.3s ease;
-    margin-left: 10px; /* Space between label and dropdown */
-    position: relative;
 }
 
-/* Focus state for Dropdown */
-#sort:focus {
-    outline: none;
-    border-color: #4C4A8D; /* Darker border color on focus */
+.quiz-card:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+    background-color: white;
 }
 
-/* Container for Dropdown */
-.categories label {
+.quiz-card h4 {
+    color: #6A67CE; /* Purple accent for quiz titles */
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.quiz-card p {
+    color: #555; /* Darker text for descriptions */
     font-size: 16px;
-    color: #6A67CE; /* Text color to match theme */
+    margin: 0;
 }
 
-/* Add a custom dropdown arrow */
-#sort::after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    pointer-events: none;
-    font-size: 12px;
-    color: #6A67CE;
-    top: 50%;
-    transform: translateY(-50%);
+@media (max-width: 768px) {
+    .category-card, .quiz-card {
+        flex: 1 1 calc(48% - 20px); /* Two cards per row on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .category-card, .quiz-card {
+        flex: 1 1 100%; /* Full width on mobile screens */
+    }
 }

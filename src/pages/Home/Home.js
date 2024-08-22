@@ -9,14 +9,19 @@ function Home() {
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/quizzes')
-            .then(response => response.json())
-            .then(data => {
+        // Use jQuery AJAX to fetch quizzes
+        $.ajax({
+            url: 'http://localhost:3001/api/quizzes',
+            method: 'GET',
+            success: (data) => {
                 setQuizzes(data);
                 // Use jQuery to animate the quiz cards after they are loaded
                 $('#quizzes .quiz-card').hide().fadeIn(1000);
-            })
-            .catch(error => console.error('Error fetching quizzes:', error));
+            },
+            error: (_jqXHR, textStatus, errorThrown) => {
+                console.error('Error fetching quizzes:', textStatus, errorThrown);
+            }
+        });
     }, []);
 
     const handleCardClick = (quizTitle) => {
