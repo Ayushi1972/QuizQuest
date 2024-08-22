@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import TextInputQuestion from '../../components/TextInputQuestion/TextInputQuestion';
 import MultipleChoiceQuestion from '../../components/MultipleChoiceQuestion/MultipleChoiceQuestion';
 import ResultModal from '../../components/ResultAnimation/ResultAnimation';
+import PadletEmbed from '../../components/Padlet/Padlet'; // Import the PadletEmbed component
 import $ from 'jquery';
 import './QuizPage.css';
 
@@ -132,6 +133,7 @@ function QuizPage() {
       <div id='submit-quiz'>
         <button type="button" onClick={handleSubmit}>Submit</button>
       </div>
+      <PadletEmbed /> {/* Add the PadletEmbed component here */}
     </div>
   );
 }
