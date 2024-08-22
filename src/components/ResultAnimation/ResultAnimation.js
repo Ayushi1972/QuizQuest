@@ -13,6 +13,20 @@ class ResultModal extends React.Component {
     $('.modal-content').fadeOut(300, this.props.onClose);
   };
 
+  copyToClipboard = () => {
+    const { score, totalQuestions } = this.props;
+    const shareUrl = window.location.href; // Get the current page URL
+    const message = `I scored ${score} out of ${totalQuestions}! Check it out here: ${shareUrl}`;
+    
+    navigator.clipboard.writeText(message)
+      .then(() => {
+        alert('Results and link copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
+
   render() {
     const { score, totalQuestions } = this.props;
     const percentage = (score / totalQuestions) * 100;
@@ -32,6 +46,7 @@ class ResultModal extends React.Component {
           <h2>{message}</h2>
           <p>Your score: {score} / {totalQuestions}</p>
           <button onClick={this.handleClose}>Close</button>
+          <button onClick={this.copyToClipboard}>Copy Results to Clipboard</button>
         </div>
       </div>
     );
