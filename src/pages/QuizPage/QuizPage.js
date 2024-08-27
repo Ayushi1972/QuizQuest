@@ -30,25 +30,27 @@ function QuizPage() {
       try {
         const response = await fetch(`http://localhost:3001/api/quiz/${encodeURIComponent(title)}`);
         const data = await response.json();
-
+    
         const shuffledQuestions = data.questions.map(question => {
+          // Store the correct answer text before shuffling
+          const correctAnswerText = question.answers.find(answer => answer.isCorrect).text;
+    
           const shuffledAnswers = shuffleArray([...question.answers]);
           return {
             ...question,
             answers: shuffledAnswers,
-            correctAnswer: shuffledAnswers.find(answer => answer.isCorrect).text
+            correctAnswer: correctAnswerText // Use the stored correct answer text
           };
         });
-
+    
         setQuizData({ ...data, questions: shuffledQuestions });
-
+    
         // Use jQuery to fade in the quiz content
         $('#all-quiz-page').hide().fadeIn(1000);
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       }
     };
-
     fetchQuizData();
   }, [title]);
 
@@ -59,10 +61,10 @@ function QuizPage() {
   const handleSubmit = () => {
     let newFeedback = {};
     let newScore = 0;
-
+  
     quizData.questions.forEach(question => {
       const userAnswer = answers[question.questionId];
-
+  
       if (userAnswer === question.correctAnswer) {
         newFeedback[question.questionId] = 'Correct';
         newScore += 1;
@@ -70,7 +72,7 @@ function QuizPage() {
         newFeedback[question.questionId] = 'Incorrect';
       }
     });
-
+  
     setFeedback(newFeedback);
     setScore(newScore);
     setSubmitted(true);
