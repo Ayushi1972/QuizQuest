@@ -1,11 +1,11 @@
 /* Form Container */
 form {
     background-color: #F5F5FF; /* Light purple background */
-    padding: 40px; /* More padding for white space inside the form */
-    border-radius: 12px;
+    padding: 40px; /* Padding for white space inside the form */
+    border-radius: 12px; /* Rounded corners for a softer look */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card effect */
     width: 100vw; /* Full width of the viewport */
-    max-width: 1200px; /* Optional: Max width for larger screens */
+    max-width: 1200px; /* Max width for larger screens */
     margin: 20px auto; /* Center the form with white space around it */
     font-family: 'Poppins', sans-serif; /* Consistent font */
     box-sizing: border-box; /* Include padding and border in the element's total width */
@@ -23,7 +23,7 @@ form label {
     color: #6A67CE; /* Matching the navbar's background color */
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 0;
+    margin-bottom: 5px; /* Slight margin for separation */
 }
 
 /* Form Inputs and Textarea */
@@ -60,22 +60,35 @@ form select:focus {
 /* Question Sections */
 .question {
     background-color: #FFFFFF; /* White background for each question */
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for individual question */
     display: flex;
-    flex-direction: row; /* Arrange child elements in a column */
-    gap: 10px; /* Space between items in a column */
+    flex-direction: column; /* Arrange child elements in a column */
+    gap: 15px; /* Space between items in a column */
 }
 
-/* Question Label */
-.question label {
-    font-size: 16px; /* Adjust font size if needed */
+/* Grid for Multiple Choice Options */
+.choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Space between grid items */
 }
 
-/* Input Fields */
-.question input[type="text"] {
+/* Multiple Choice Input Fields */
+.choice-grid input[type="text"] {
     width: 100%; /* Full width for input fields */
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #5A56B9;
+    box-sizing: border-box;
+}
+
+/* Row for Correct Choice, Hint, and Image URL */
+.row {
+    display: flex;
+    gap: 10px; /* Space between items in the row */
+    align-items: center; /* Align items vertically center */
 }
 
 /* Add Question Button */
@@ -107,7 +120,7 @@ form select:focus {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
-    align-self: center; /* Center the button within the question section */
+    align-self: flex-end; /* Align to the right within the question section */
 }
 
 .question button[type="button"]:hover {

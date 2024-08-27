@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useForm, Controller } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 import $ from 'jquery';
 import './Create.css';
 
@@ -13,18 +14,45 @@ const ItemTypes = {
 
 function CreateQuiz() {
   const { register, handleSubmit, control, formState: { errors } } = useForm();
-  const [questions, setQuestions] = useState([{ id: 1, question: '', answer: '', hint: '', imageUrl: '' }]);
+  const [questions, setQuestions] = useState([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
+  const [categories, setCategories] = useState([]);
 
-  const onSubmit = (data) => {
+  useEffect(() => {
+    // Fetch categories from the backend
+    axios.get('http://localhost:3001/api/categories')
+      .then(response => {
+        setCategories(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching categories:', error);
+        toast.error('Failed to load categories.');
+      });
+  }, []);
+
+  const onSubmit = async (data) => {
     if (questions.length === 0) {
       toast.error("Must have at least 1 question");
       return;
     }
-    toast.success('Form submitted successfully!');
+
+    const quizData = {
+      ...data,
+      questions
+    };
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/quizzes', quizData);
+      if (response.status === 200) {
+        toast.success('Quiz created successfully!');
+      }
+    } catch (error) {
+      console.error('Error creating quiz:', error);
+      toast.error('Failed to create quiz. Please try again.');
+    }
   };
 
-  const addQuestion = () => {
-    const newQuestion = { id: questions.length + 1, question: '', answer: '', hint: '', imageUrl: '' };
+  const addQuestion = (type) => {
+    const newQuestion = { id: questions.length + 1, type, question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' };
     setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
     setTimeout(() => {
       $(`#question-${newQuestion.id}`).hide().fadeIn(1000);
@@ -34,6 +62,12 @@ function CreateQuiz() {
   const handleQuestionChange = (index, field, value) => {
     const newQuestions = [...questions];
     newQuestions[index][field] = value;
+    setQuestions(newQuestions);
+  };
+
+  const handleChoiceChange = (qIndex, cIndex, value) => {
+    const newQuestions = [...questions];
+    newQuestions[qIndex].choices[cIndex] = value;
     setQuestions(newQuestions);
   };
 
@@ -85,12 +119,9 @@ function CreateQuiz() {
               aria-required="true"
             >
               <option value="">Select a category</option>
-              <option value="music">Music</option>
-              <option value="history">History</option>
-              <option value="science">Science</option>
-              <option value="pop-culture">Pop Culture</option>
-              <option value="sports">Sports</option>
-              <option value="geography">Geography</option>
+              {categories.map(category => (
+                <option key={category.Id} value={category.Id}>{category.CategoryName}</option>
+              ))}
             </select>
             {errors.category && <div className="error">{errors.category.message}</div>}
           </div>
@@ -119,12 +150,14 @@ function CreateQuiz() {
               question={q}
               moveQuestion={moveQuestion}
               handleQuestionChange={handleQuestionChange}
+              handleChoiceChange={handleChoiceChange}
               deleteQuestion={deleteQuestion}
               errors={errors}
             />
           ))}
 
-          <button type="button" id="addQuestion" onClick={addQuestion}>+ Add Question</button>
+          <button type="button" id="addMultipleChoiceQuestion" onClick={() => addQuestion('multiple-choice')}>+ Add Multiple Choice Question</button>
+          <button type="button" id="addInputQuestion" onClick={() => addQuestion('input')}>+ Add Input Question</button>
         </div>
         <button type="submit">Create Quiz</button>
       </form>
@@ -133,7 +166,7 @@ function CreateQuiz() {
   );
 }
 
-function Question({ id, index, question, moveQuestion, handleQuestionChange, deleteQuestion, errors }) {
+function Question({ id, index, question, moveQuestion, handleQuestionChange, handleChoiceChange, deleteQuestion, errors }) {
   const ref = React.useRef(null);
   const [, drop] = useDrop({
     accept: ItemTypes.QUESTION,
@@ -174,35 +207,68 @@ function Question({ id, index, question, moveQuestion, handleQuestionChange, del
         />
         {errors[`question${index}`] && <div className="error">{errors[`question${index}`]}</div>}
       </div>
-      <div>
-        <label>Answer:</label>
-        <input
-          type="text"
-          name="answer"
-          value={question.answer}
-          onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
-          required
-        />
-        {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>}
-      </div>
-      <div>
-        <label>Hint:</label>
-        <input
-          type="text"
-          name="hint"
-          value={question.hint}
-          onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Image URL:</label>
-        <input
-          type="text"
-          name="imageUrl"
-          value={question.imageUrl}
-          onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)}
-        />
-      </div>
+
+      {question.type === 'multiple-choice' ? (
+        <>
+          <div className="choice-grid">
+            {question.choices.map((choice, cIndex) => (
+              <div key={cIndex}>
+                <label>Choice {cIndex + 1}:</label>
+                <input
+                  type="text"
+                  value={choice}
+                  onChange={(e) => handleChoiceChange(index, cIndex, e.target.value)}
+                  required
+                />
+              </div>
+            ))}
+          </div>
+          <div className="row">
+            <div>
+              <label>Correct Choice:</label>
+              <select
+                value={question.correctChoice}
+                onChange={(e) => handleQuestionChange(index, 'correctChoice', e.target.value)}
+              >
+                {question.choices.map((_, cIndex) => (
+                  <option key={cIndex} value={cIndex}>{`Choice ${cIndex + 1}`}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Hint:</label>
+              <input
+                type="text"
+                name="hint"
+                value={question.hint}
+                onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Image URL:</label>
+              <input
+                type="text"
+                name="imageUrl"
+                value={question.imageUrl}
+                onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>
+          <label>Answer:</label>
+          <input
+            type="text"
+            name="answer"
+            value={question.answer}
+            onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
+            required
+          />
+          {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>}
+        </div>
+      )}
+
       <button type="button" onClick={() => deleteQuestion(index)}>Delete</button>
     </div>
   );
