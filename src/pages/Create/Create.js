@@ -13,7 +13,7 @@ const ItemTypes = {
 };
 
 function CreateQuiz() {
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
   const [questions, setQuestions] = useState([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
   const [categories, setCategories] = useState([]);
 
@@ -44,6 +44,8 @@ function CreateQuiz() {
       const response = await axios.post('http://localhost:3001/api/quizzes', quizData);
       if (response.status === 200) {
         toast.success('Quiz created successfully!');
+        reset(); // Clear the form fields
+        setQuestions([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]); // Reset questions
       }
     } catch (error) {
       console.error('Error creating quiz:', error);
@@ -155,9 +157,10 @@ function CreateQuiz() {
               errors={errors}
             />
           ))}
-
-          <button type="button" id="addMultipleChoiceQuestion" onClick={() => addQuestion('multiple-choice')}>+ Add Multiple Choice Question</button>
-          <button type="button" id="addInputQuestion" onClick={() => addQuestion('input')}>+ Add Input Question</button>
+          <div className='adding-buttons'>
+            <button type="button" id="addMultipleChoiceQuestion" onClick={() => addQuestion('multiple-choice')}>+ Add Multiple Choice Question</button>
+            <button type="button" id="addInputQuestion" onClick={() => addQuestion('input')}>+ Add Input Question</button>
+          </div>
         </div>
         <button type="submit">Create Quiz</button>
       </form>
@@ -209,52 +212,19 @@ function Question({ id, index, question, moveQuestion, handleQuestionChange, han
       </div>
 
       {question.type === 'multiple-choice' ? (
-        <>
-          <div className="choice-grid">
-            {question.choices.map((choice, cIndex) => (
-              <div key={cIndex}>
-                <label>Choice {cIndex + 1}:</label>
-                <input
-                  type="text"
-                  value={choice}
-                  onChange={(e) => handleChoiceChange(index, cIndex, e.target.value)}
-                  required
-                />
-              </div>
-            ))}
-          </div>
-          <div className="row">
-            <div>
-              <label>Correct Choice:</label>
-              <select
-                value={question.correctChoice}
-                onChange={(e) => handleQuestionChange(index, 'correctChoice', e.target.value)}
-              >
-                {question.choices.map((_, cIndex) => (
-                  <option key={cIndex} value={cIndex}>{`Choice ${cIndex + 1}`}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>Hint:</label>
+        <div className="choice-grid">
+          {question.choices.map((choice, cIndex) => (
+            <div key={cIndex}>
+              <label>Choice {cIndex + 1}:</label>
               <input
                 type="text"
-                name="hint"
-                value={question.hint}
-                onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)}
+                value={choice}
+                onChange={(e) => handleChoiceChange(index, cIndex, e.target.value)}
+                required
               />
             </div>
-            <div>
-              <label>Image URL:</label>
-              <input
-                type="text"
-                name="imageUrl"
-                value={question.imageUrl}
-                onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)}
-              />
-            </div>
-          </div>
-        </>
+          ))}
+        </div>
       ) : (
         <div>
           <label>Answer:</label>
@@ -268,6 +238,40 @@ function Question({ id, index, question, moveQuestion, handleQuestionChange, han
           {errors[`answer${index}`] && <div className="error">{errors[`answer${index}`]}</div>}
         </div>
       )}
+
+      <div className="row">
+        {question.type === 'multiple-choice' && (
+          <div>
+            <label>Correct Choice:</label>
+            <select
+              value={question.correctChoice}
+              onChange={(e) => handleQuestionChange(index, 'correctChoice', e.target.value)}
+            >
+              {question.choices.map((_, cIndex) => (
+                <option key={cIndex} value={cIndex}>{`Choice ${cIndex + 1}`}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        <div>
+          <label>Hint:</label>
+          <input
+            type="text"
+            name="hint"
+            value={question.hint}
+            onChange={(e) => handleQuestionChange(index, 'hint', e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Image URL:</label>
+          <input
+            type="text"
+            name="imageUrl"
+            value={question.imageUrl}
+            onChange={(e) => handleQuestionChange(index, 'imageUrl', e.target.value)}
+          />
+        </div>
+      </div>
 
       <button type="button" onClick={() => deleteQuestion(index)}>Delete</button>
     </div>

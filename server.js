@@ -89,7 +89,7 @@ app.get('/api/quiz/:title', (req, res) => {
 });
 
 app.post('/api/quizzes', (req, res) => {
-    const { title, description, category, timer, questions } = req.body;
+    const { title, description, category, questions } = req.body;
   
     // Insert quiz into tblQuizzes
     const quizQuery = 'INSERT INTO tblQuizzes (Title, Category, Description) VALUES (?, ?, ?)';
@@ -111,11 +111,13 @@ app.post('/api/quizzes', (req, res) => {
           }
   
           const questionId = result.insertId;
-          const answerQuery = 'INSERT INTO tblAnswers (QuestionId, AnswerText, IsCorrect) VALUES (?, ?, ?)';
-          db.query(answerQuery, [questionId, question.answer, 1], (err) => {
-            if (err) {
-              console.error('Error inserting answer:', err);
-            }
+          question.choices.forEach((choice, index) => {
+            const answerQuery = 'INSERT INTO tblAnswers (QuestionId, AnswerText, IsCorrect) VALUES (?, ?, ?)';
+            db.query(answerQuery, [questionId, choice, index === question.correctChoice ? 1 : 0], (err) => {
+              if (err) {
+                console.error('Error inserting answer:', err);
+              }
+            });
           });
         });
       });

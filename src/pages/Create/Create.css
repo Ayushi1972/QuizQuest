@@ -91,6 +91,30 @@ form select:focus {
     align-items: center; /* Align items vertically center */
 }
 
+/* Adding Buttons */
+.adding-buttons {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out the buttons evenly */
+    gap: 10px; /* Optional: Add some space between the buttons */
+}
+
+.adding-buttons button {
+    flex: 1; /* Allow buttons to grow equally */
+    padding: 12px 20px; /* Add padding for a better look */
+    background-color: #6A67CE; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.adding-buttons button:hover {
+    background-color: #5A56B9; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
 /* Add Question Button */
 #addQuestion {
     background-color: #6A67CE;
