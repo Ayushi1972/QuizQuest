@@ -7,7 +7,7 @@ const PadletEmbed = () => {
         <iframe
           src="https://padlet.com/embed/pcxkh53ez31p50z5"
           frameborder="0"
-          allow="camera;microphone;geolocation"
+          allow="fullscreen;camera;microphone;geolocation"
           style="width:100%;height:608px;display:block;padding:0;margin:0"
         ></iframe>
       </p>
