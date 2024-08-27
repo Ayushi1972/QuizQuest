@@ -16,6 +16,7 @@ function CreateQuiz() {
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
   const [questions, setQuestions] = useState([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(''); // State for selected category ID
 
   useEffect(() => {
     // Fetch categories from the backend
@@ -37,8 +38,11 @@ function CreateQuiz() {
 
     const quizData = {
       ...data,
+      category: selectedCategory, // Use the selected category ID
       questions
     };
+
+    console.log('Submitting Quiz Data:', quizData); // Log the data being submitted
 
     try {
       const response = await axios.post('http://localhost:3001/api/quizzes', quizData);
@@ -46,6 +50,7 @@ function CreateQuiz() {
         toast.success('Quiz created successfully!');
         reset(); // Clear the form fields
         setQuestions([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]); // Reset questions
+        setSelectedCategory(''); // Reset selected category
       }
     } catch (error) {
       console.error('Error creating quiz:', error);
@@ -117,12 +122,14 @@ function CreateQuiz() {
             <label htmlFor="category">Category</label>
             <select
               id="category"
-              {...register('category', { required: 'Please select a category' })}
-              aria-required="true"
-            >
+              value={selectedCategory} // Bind to state
+              onChange={(e) => setSelectedCategory(e.target.value)} // Update state on change
+              aria-required="true">
               <option value="">Select a category</option>
               {categories.map(category => (
-                <option key={category.Id} value={category.Id}>{category.CategoryName}</option>
+                <option key={category.Id} value={category.Id}>
+                  {category.CategoryName}
+                </option>
               ))}
             </select>
             {errors.category && <div className="error">{errors.category.message}</div>}

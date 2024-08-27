@@ -40,7 +40,7 @@ app.get('/api/quizzes', (req, res) => {
 });
 
 app.get('/api/categories', (req, res) => {
-    const query = 'SELECT CategoryName, ImageURL FROM tblCategories';
+    const query = 'SELECT Id, CategoryName, ImageURL FROM tblCategories';
     db.query(query, (err, results) => {
         if (err) {
             console.error('Database query error:', err);
@@ -90,41 +90,53 @@ app.get('/api/quiz/:title', (req, res) => {
 
 app.post('/api/quizzes', (req, res) => {
     const { title, description, category, questions } = req.body;
-  
+
     // Insert quiz into tblQuizzes
     const quizQuery = 'INSERT INTO tblQuizzes (Title, Category, Description) VALUES (?, ?, ?)';
     db.query(quizQuery, [title, category, description], (err, result) => {
-      if (err) {
-        console.error('Error inserting quiz:', err);
-        return res.status(500).send('Error inserting quiz');
-      }
-  
-      const quizId = result.insertId;
-  
-      // Insert questions into tblQuestion and answers into tblAnswers
-      questions.forEach((question) => {
-        const questionQuery = 'INSERT INTO tblQuestion (QuizId, QuestionText, Hint, ImageUrl) VALUES (?, ?, ?, ?)';
-        db.query(questionQuery, [quizId, question.question, question.hint, question.imageUrl], (err, result) => {
-          if (err) {
-            console.error('Error inserting question:', err);
-            return;
-          }
-  
-          const questionId = result.insertId;
-          question.choices.forEach((choice, index) => {
-            const answerQuery = 'INSERT INTO tblAnswers (QuestionId, AnswerText, IsCorrect) VALUES (?, ?, ?)';
-            db.query(answerQuery, [questionId, choice, index === question.correctChoice ? 1 : 0], (err) => {
-              if (err) {
-                console.error('Error inserting answer:', err);
-              }
+        if (err) {
+            console.error('Error inserting quiz:', err);
+            return res.status(500).send('Error inserting quiz');
+        }
+
+        const quizId = result.insertId;
+
+        // Insert questions into tblQuestion and answers into tblAnswers
+        questions.forEach((question) => {
+            const questionQuery = 'INSERT INTO tblQuestion (QuizId, QuestionText, Hint, ImageUrl) VALUES (?, ?, ?, ?)';
+            db.query(questionQuery, [quizId, question.question, question.hint, question.imageUrl], (err, result) => {
+                if (err) {
+                    console.error('Error inserting question:', err);
+                    return;
+                }
+
+                const questionId = result.insertId;
+
+                if (question.type === 'multiple-choice') {
+                    // Insert each choice as an answer
+                    question.choices.forEach((choice, index) => {
+                        const answerQuery = 'INSERT INTO tblAnswers (QuestionId, AnswerText, IsCorrect) VALUES (?, ?, ?)';
+                        db.query(answerQuery, [questionId, choice, index === parseInt(question.correctChoice, 10) ? 1 : 0], (err) => {
+                            if (err) {
+                                console.error('Error inserting answer:', err);
+                            }
+                        });
+                    });
+                } else if (question.type === 'input') {
+                    // Insert the single correct answer for input questions
+                    const answerQuery = 'INSERT INTO tblAnswers (QuestionId, AnswerText, IsCorrect) VALUES (?, ?, ?)';
+                    db.query(answerQuery, [questionId, question.answer, 1], (err) => {
+                        if (err) {
+                            console.error('Error inserting answer:', err);
+                        }
+                    });
+                }
             });
-          });
         });
-      });
-  
-      res.status(200).send('Quiz created successfully');
+
+        res.status(200).send('Quiz created successfully');
     });
-  });
+});
 
 app.listen(3001, () => {
     console.log('Server is running on port 3001');
