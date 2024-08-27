@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -7,11 +8,12 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: 'sql3.freesqldatabase.com',
-    user: 'sql3728185',
-    password: 'UbLQlzE94q', // Replace with your actual password
-    database: 'sql3728185', // Correct database name
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
+
 db.connect(err => {
     if (err) {
         console.error('Database connection failed:', err.stack);
