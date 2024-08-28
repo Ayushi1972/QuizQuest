@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -13,7 +13,7 @@ const ItemTypes = {
 };
 
 function CreateQuiz() {
-  const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [questions, setQuestions] = useState([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(''); // State for selected category ID
@@ -133,22 +133,6 @@ function CreateQuiz() {
               ))}
             </select>
             {errors.category && <div className="error">{errors.category.message}</div>}
-          </div>
-
-          <div>
-            <label htmlFor="timer">Set Timer (minutes):</label>
-            <Controller
-              name="timer"
-              control={control}
-              defaultValue="5"
-              render={({ field }) => (
-                <select {...field}>
-                  {Array.from({ length: 21 }, (_, i) => (
-                    <option value={i} key={i}>{i}</option>
-                  ))}
-                </select>
-              )}
-            />
           </div>
 
           {questions.map((q, index) => (

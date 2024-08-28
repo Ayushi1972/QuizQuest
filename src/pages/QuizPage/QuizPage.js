@@ -7,6 +7,7 @@ import PadletEmbed from '../../components/Padlet/Padlet'; // Import the PadletEm
 import $ from 'jquery';
 import './QuizPage.css';
 
+// Function to shuffle an array (used for shuffling quiz answers)
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -16,30 +17,31 @@ const shuffleArray = (array) => {
 };
 
 function QuizPage() {
-  const { title } = useParams();
-  const [quizData, setQuizData] = useState(null);
-  const [answers, setAnswers] = useState({});
-  const [feedback, setFeedback] = useState({});
-  const [score, setScore] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  const [showHints, setShowHints] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const { title } = useParams(); // Get the quiz title from the URL parameters
+  const [quizData, setQuizData] = useState(null); // State to store quiz data
+  const [answers, setAnswers] = useState({}); // State to store user's answers
+  const [feedback, setFeedback] = useState({}); // State to store feedback for each question
+  const [score, setScore] = useState(0); // State to store the user's score
+  const [submitted, setSubmitted] = useState(false); // State to track if the quiz has been submitted
+  const [showHints, setShowHints] = useState({}); // State to track which hints are shown
+  const [showModal, setShowModal] = useState(false); // State to control the visibility of the result modal
+  const [revealAnswers, setRevealAnswers] = useState({}); // State to track revealed answers
 
   useEffect(() => {
+    // Fetch quiz data from the server
     const fetchQuizData = async () => {
       try {
         const response = await fetch(`http://localhost:3001/api/quiz/${encodeURIComponent(title)}`);
         const data = await response.json();
     
+        // Shuffle answers and store the correct answer text
         const shuffledQuestions = data.questions.map(question => {
-          // Store the correct answer text before shuffling
           const correctAnswerText = question.answers.find(answer => answer.isCorrect).text;
-    
           const shuffledAnswers = shuffleArray([...question.answers]);
           return {
             ...question,
             answers: shuffledAnswers,
-            correctAnswer: correctAnswerText // Use the stored correct answer text
+            correctAnswer: correctAnswerText
           };
         });
     
@@ -54,14 +56,17 @@ function QuizPage() {
     fetchQuizData();
   }, [title]);
 
+  // Handle answer changes for each question
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
+  // Handle quiz submission
   const handleSubmit = () => {
     let newFeedback = {};
     let newScore = 0;
   
+    // Evaluate each question
     quizData.questions.forEach(question => {
       const userAnswer = answers[question.questionId];
   
@@ -79,19 +84,25 @@ function QuizPage() {
     setShowModal(true);
   };
 
+  // Toggle hint visibility
   const toggleHint = (questionId) => {
     setShowHints(prev => ({ ...prev, [questionId]: !prev[questionId] }));
   };
 
+  // Toggle answer reveal visibility
+  const toggleRevealAnswer = (questionId) => {
+    setRevealAnswers(prev => ({ ...prev, [questionId]: !prev[questionId] }));
+  };
+
+  // Close the result modal
   const closeModal = () => {
-    // Use jQuery to fade out the modal
     $('.modal-overlay').fadeOut(500, () => {
       setShowModal(false);
     });
   };
 
   if (!quizData) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Show loading state while fetching data
   }
 
   return (
@@ -126,9 +137,17 @@ function QuizPage() {
           </button>
           {showHints[question.questionId] && <p className="hint">{question.Hint}</p>}
           {submitted && (
-            <div className={`feedback ${feedback[question.questionId] === 'Correct' ? 'correct' : 'incorrect'}`}>
-              {feedback[question.questionId]}
-            </div>
+            <>
+              <div className={`feedback ${feedback[question.questionId] === 'Correct' ? 'correct' : 'incorrect'}`}>
+                {feedback[question.questionId]}
+              </div>
+              <button onClick={() => toggleRevealAnswer(question.questionId)}>
+                {revealAnswers[question.questionId] ? 'Hide Answer' : 'Reveal Answer'}
+              </button>
+              {revealAnswers[question.questionId] && (
+                <p className="correct-answer">Correct Answer: {question.correctAnswer}</p>
+              )}
+            </>
           )}
         </div>
       ))}

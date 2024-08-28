@@ -140,3 +140,19 @@ button:hover {
     margin: 20px 0 10px 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+.navbar button {
+    background-color: #6A67CE;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 5px;
+  }
+  
+  .navbar button:hover {
+    background-color: #5A56B9;
+    transform: scale(1.05);
+  }
