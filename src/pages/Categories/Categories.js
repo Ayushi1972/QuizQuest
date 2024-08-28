@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import $ from 'jquery';
 import './Categories.css';
+import music from '../../assets/images/music.jpg';
+import geography from '../../assets/images/geography.jpg';
+import history from '../../assets/images/history.jpg';
+import science from '../../assets/images/science.jpg';
+import sports from '../../assets/images/sports.jpg';
+import popculture from '../../assets/images/pop culture.jpg';
 
 function Categories() {
   const [categories, setCategories] = useState([]);
@@ -9,6 +15,16 @@ function Categories() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
+
+  // Mapping of categories to images
+  const categoryImages = {
+    Music: music,
+    Geography: geography,
+    History: history,
+    Science: science,
+    Sports: sports,
+    'Pop Culture': popculture
+  };
 
   useEffect(() => {
     fetch('http://localhost:3001/api/categories')
@@ -80,7 +96,7 @@ function Categories() {
           <div key={category.CategoryName} className="category-card" onClick={() => handleCategoryClick(category.CategoryName)}>
             <h2>{category.CategoryName}</h2>
             <img
-              src={category.ImageURL}
+              src={categoryImages[category.CategoryName] || ''}
               alt={`Illustration representing ${category.CategoryName}`}
             />
           </div>

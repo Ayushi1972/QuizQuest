@@ -29,11 +29,6 @@ function Navbar() {
     }
   };
 
-  // Function to open a new window for sharing
-  const openShareWindow = (url) => {
-    window.open(url, '_blank', 'width=600,height=400');
-  };
-
   return (
     <nav className="navbar">
       <h1 className="navbar-logo">QuizQuest</h1>
@@ -44,16 +39,6 @@ function Navbar() {
         <li><Link to="/pages/Create">Create Your Own Quiz</Link></li>
         <li>
           <button onClick={chooseRandomQuiz}>Random Quiz</button>
-        </li>
-        <li>
-          <button onClick={() => openShareWindow('https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:3000')}>
-            Share on Facebook
-          </button>
-        </li>
-        <li>
-          <button onClick={() => openShareWindow('https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:3000')}>
-            Share on LinkedIn
-          </button>
         </li>
       </ul>
     </nav>
