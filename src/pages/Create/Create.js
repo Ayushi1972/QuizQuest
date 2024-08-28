@@ -16,10 +16,9 @@ function CreateQuiz() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [questions, setQuestions] = useState([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(''); // State for selected category ID
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Fetch categories from the backend
     axios.get('http://localhost:3001/api/categories')
       .then(response => {
         setCategories(response.data);
@@ -36,21 +35,29 @@ function CreateQuiz() {
       return;
     }
 
+    // Check for duplicate choices
+    for (let i = 0; i < questions.length; i++) {
+      const choices = questions[i].choices;
+      const uniqueChoices = new Set(choices);
+      if (uniqueChoices.size !== choices.length) {
+        toast.error(`Duplicate choices found in question ${i + 1}. Please ensure all options are unique.`);
+        return;
+      }
+    }
+
     const quizData = {
       ...data,
-      category: selectedCategory, // Use the selected category ID
+      category: selectedCategory,
       questions
     };
-
-    console.log('Submitting Quiz Data:', quizData); // Log the data being submitted
 
     try {
       const response = await axios.post('http://localhost:3001/api/quizzes', quizData);
       if (response.status === 200) {
         toast.success('Quiz created successfully!');
-        reset(); // Clear the form fields
-        setQuestions([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]); // Reset questions
-        setSelectedCategory(''); // Reset selected category
+        reset();
+        setQuestions([{ id: 1, type: 'multiple-choice', question: '', choices: ['', '', '', ''], correctChoice: 0, hint: '', imageUrl: '' }]);
+        setSelectedCategory('');
       }
     } catch (error) {
       console.error('Error creating quiz:', error);
